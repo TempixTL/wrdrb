@@ -1,6 +1,10 @@
-import { ce } from '../react-common.js';
+import { ce } from '../../react-common.js';
 import UserFormComponent from './UserFormComponent.js';
 
+/**
+ * A page-like component that handles authenticating users. This includes login
+ * as well as registration.
+ */
 export default class AuthenticationComponent extends React.Component {
   onLoginFormSubmit(e, username, password) {
     console.log('Login Pressed');

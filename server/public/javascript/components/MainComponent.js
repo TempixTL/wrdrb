@@ -1,5 +1,5 @@
 import { ce, csrfToken, versionedAsset } from '../react-common.js';
-import AuthenticationComponent from './AuthenticationComponent.js';
+import AuthenticationComponent from './authentication/AuthenticationComponent.js';
 
 /**
  * The Main entry point of the React application.

@@ -1,4 +1,4 @@
-import { ce } from '../react-common.js';
+import { ce } from '../../react-common.js';
 
 /**
  * @typedef UserFormComponentProps
