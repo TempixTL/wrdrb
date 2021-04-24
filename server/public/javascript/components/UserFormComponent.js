@@ -1,25 +1,46 @@
 import { ce } from '../react-common.js';
 
-export default class LoginComponent extends React.Component {
+/**
+ * @typedef UserFormComponentProps
+ * @type {object}
+ * @property {string} title The title to render for the form.
+ * @property {string} submitLabel The label text of the submit button.
+ * @property {UserFormComponentSubmitCallback} onSubmit The callback when the
+ * form is submitted.
+ * 
+ * @callback UserFormComponentSubmitCallback
+ * @param {Event} event
+ * @param {string} username
+ * @param {string} password
+ */
+
+/**
+ * Renders a single UserForm.
+ * For example, a login form or a registration form.
+ * 
+ * @param {UserFormComponentProps} props
+ */
+export default class UserFormComponent extends React.Component {
   constructor(props) {
     super(props);
+    /** @type {UserFormComponentProps} */
+    this.props;
+
     this.state = {
       username: '',
       password: '',
     };
   }
 
-  onLoginFormSubmit(event) {
-    event.preventDefault();
-    const { username, password } = this.state;
-    console.log('Login form submitted.');
-    console.log(`Username: ${username}, Password: ${password}`);
+  onSubmit(e) {
+    e.preventDefault();
+    this.props.onSubmit(e, this.state.username, this.state.password);
   }
 
   render() {
     return ce('div', null,
-      ce('h1', null, 'Login'),
-      ce('form', { onSubmit: (e) => this.onLoginFormSubmit(e) },
+      ce('h1', null, this.props.title),
+      ce('form', { onSubmit: (e) => this.onSubmit(e) },
         ce('label', { htmlFor: 'username' }, 'Username'),
         ce('div', null,
           ce('input', {
@@ -47,7 +68,7 @@ export default class LoginComponent extends React.Component {
             ce('i', null),
           ),
         ),
-        ce('input', { type: 'submit', value: 'Login' }),
+        ce('input', { type: 'submit', value: this.props.submitLabel }),
       ),
     );
   }
