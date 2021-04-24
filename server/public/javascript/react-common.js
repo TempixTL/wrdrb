@@ -15,7 +15,7 @@ export const csrfToken = document.getElementById('csrfToken').value;
  * A simple helper function to get versioned assets from Play in Javascript.
  * 
  * Similar to `@routes.Assets.versioned(...)` in Scala.
- * @param {string} src The path or the asset starting within the `public`
+ * @param {string} src The path of the asset starting within the `public`
  * directory.
  * @returns The full path to the versioned asset from Play.
  */
