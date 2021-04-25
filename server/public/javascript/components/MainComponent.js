@@ -1,5 +1,5 @@
 import { ce, csrfToken, versionedAsset } from '../react-common.js';
-import HomeComponent from './HomeComponent.js';
+import AuthenticationComponent from './authentication/AuthenticationComponent.js';
 
 /**
  * The Main entry point of the React application.
@@ -8,6 +8,6 @@ import HomeComponent from './HomeComponent.js';
  */
 export default class MainComponent extends React.Component {
   render() {
-    return ce(HomeComponent, { username: 'USERNAME' });
+    return ce(AuthenticationComponent);
   }
 }
