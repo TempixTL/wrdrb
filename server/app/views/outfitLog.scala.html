@@ -1,0 +1,9 @@
+
+
+@main("Outfit Log"){
+  <div id="outfitLog"></div>
+  <input type="hidden" id="outfitLogRoute" value="@routes.WrdrbApplication.outfitLog">
+  <input type='file' id='fileUpload' onChange={props.onChange} /> 
+  <input type="hidden" id="outfitDetailsRoute" value="@routes.WrdrbApplication.outfitDetails">
+  <script src="@routes.Assets.versioned("javascript/react-main.js")" type="module"></script>
+}
