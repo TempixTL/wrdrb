@@ -1,4 +1,5 @@
 import { ce, csrfToken, versionedAsset } from '../react-common.js';
+import HomeComponent from './HomeComponent.js';
 
 /**
  * The Main entry point of the React application.
@@ -7,10 +8,6 @@ import { ce, csrfToken, versionedAsset } from '../react-common.js';
  */
 export default class MainComponent extends React.Component {
   render() {
-    return ce('div', null, 
-      ce('h1', null, 'Hello, React!'),
-      ce('p', null, `The CSRF Token is ${csrfToken}`),
-      ce('img', { src: versionedAsset('images/favicon.png') }),
-    );
+    return ce(HomeComponent, { username: 'USERNAME' });
   }
 }
