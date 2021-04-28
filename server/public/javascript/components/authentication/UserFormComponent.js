@@ -26,6 +26,12 @@ export default class UserFormComponent extends React.Component {
     /** @type {UserFormComponentProps} */
     this.props;
 
+    /**
+     * @typedef UserFormComponentState
+     * @type {object}
+     * @property {string} username
+     * @property {string} password
+     */
     this.state = {
       username: '',
       password: '',

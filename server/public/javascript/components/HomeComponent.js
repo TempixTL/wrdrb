@@ -17,6 +17,7 @@ export default class HomeComponent extends React.Component {
     this.props;
 
     /**
+     * @typedef HomeComponentState
      * @type {object}
      * @property {Bin[]} bins
      */
