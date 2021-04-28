@@ -1,20 +1,37 @@
 import { ce, csrfToken, versionedAsset } from '../react-common.js';
 
 /**
- * Wrdrb Bin View
- * 
- * # Bins
- *   POST       /bins                         controllers.Application.bins
+ * @typedef {object} BinComponentProps
+ * @property {string} username
+ */
+
+/**
+ * A page-like component that displays all the user's bins.
  */
 export default class BinComponent extends React.Component {
     constructor(props){
         super(props);
-        this.state = { username: "Default", 
-        bins: [{name: "Your Favorites", articles: ["Default Shirt"]},
-               {name: "Work", articles: ["White Shirt", " Black Pants", "Black Shoes"]}, 
-               {name: "Weekend", articles: ["Blue Hat", "White Shirt", "Black Tie", "Blue Pants"]}, 
-               {name: "Home", articles: ["Gray Shirt", "Black Pants"]}], 
-        searchText: "", selected: "Your Favorites" }
+        /** @type {BinComponentProps} */
+        this.props;
+
+        /**
+         * @typedef BinComponentState
+         * @type {object}
+         * @property {Bin[]} bins
+         * @property {string} searchText The current Bin search text.
+         * @property {string} selected The currently selected Bin.
+         */
+        this.state = {
+            username: "Default", 
+            bins: [
+                { name: "Your Favorites", articles: ["Default Shirt"] },
+                { name: "Work", articles: ["White Shirt", " Black Pants", "Black Shoes"] }, 
+                { name: "Weekend", articles: ["Blue Hat", "White Shirt", "Black Tie", "Blue Pants"] },
+                { name: "Home", articles: ["Gray Shirt", "Black Pants"] }
+            ],
+            searchText: "",
+            selected: "Your Favorites",
+        };
     }
 
     // componentDidMount() {
