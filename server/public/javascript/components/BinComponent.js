@@ -49,26 +49,26 @@ export default class BinComponent extends React.Component {
 
     render() {
         return ce('div', null, 
-        ce('h1', null, 'Bins'),
-        ce('button', { onClick: e => this.setState({ selected: "Your Favorites" })}, 'Logout'),
-        ce('img', { src: versionedAsset('images/favicon.png') }),
-        ce('input', {type: 'text', id: 'searchText', value: this.state.searchText, onChange: e => this.changeHandler(e)}),
-        ce('button', {onClick: e => console.log(this.state.searchText)}, 'Search'),
-        ce('br'),
-        ce('br'),
-        ce('div', null, this.props.username + "'s Bins"),
-        ce('br'),
-        ce('div', null, this.state.bins.map((bin, index) => ce('div', {key: index, onClick: e => this.setState({ selected: bin.name })}, bin.name))),
-        (() => {
-            if (this.state.selected != null)
-                return ce('div', null,
-                    ce('br'),
-                    ce('div', null, 'Viewing: '),
-                    ce('br'),
-                    ce('div', null, this.state.bins.find((bin) => {return bin.name == this.state.selected}).name),
-                    ce('ul', null, this.state.bins.find((bin) => {return bin.name == this.state.selected}).articles.map((article, index) => ce('li', {key: index}, article))),
-                );
-        })(),
+            ce('h1', null, 'Bins'),
+            ce('button', { onClick: e => this.setState({ selected: "Your Favorites" })}, 'Logout'),
+            ce('img', { src: versionedAsset('images/favicon.png') }),
+            ce('input', {type: 'text', id: 'searchText', value: this.state.searchText, onChange: e => this.changeHandler(e)}),
+            ce('button', {onClick: e => console.log(this.state.searchText)}, 'Search'),
+            ce('br'),
+            ce('br'),
+            ce('div', null, this.props.username + "'s Bins"),
+            ce('br'),
+            ce('div', null, this.state.bins.map((bin, index) => ce('div', {key: index, onClick: e => this.setState({ selected: bin.name })}, bin.name))),
+            (() => {
+                if (this.state.selected != null)
+                    return ce('div', null,
+                        ce('br'),
+                        ce('div', null, 'Viewing: '),
+                        ce('br'),
+                        ce('div', null, this.state.bins.find((bin) => {return bin.name === this.state.selected}).name),
+                        ce('ul', null, this.state.bins.find((bin) => {return bin.name === this.state.selected}).articles.map((article, index) => ce('li', {key: index}, article))),
+                    );
+            })(),
         );
     }
 }
