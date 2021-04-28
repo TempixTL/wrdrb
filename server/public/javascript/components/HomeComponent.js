@@ -9,11 +9,12 @@ import BinPreviewComponent from './BinPreviewComponent.js';
 
 /**
  * A page-like component which represents the home page of the application.
- * @property {HomeComponentProps} props
  */
 export default class HomeComponent extends React.Component {
   constructor(props) {
     super(props);
+    /** @type {HomeComponentProps} */
+    this.props;
 
     /**
      * @type {object}
