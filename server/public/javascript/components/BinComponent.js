@@ -22,7 +22,6 @@ export default class BinComponent extends React.Component {
          * @property {string} selected The currently selected Bin.
          */
         this.state = {
-            username: "Default", 
             bins: [
                 { name: "Your Favorites", articles: ["Default Shirt"] },
                 { name: "Work", articles: ["White Shirt", " Black Pants", "Black Shoes"] }, 
@@ -63,7 +62,7 @@ export default class BinComponent extends React.Component {
         ce('button', {onClick: e => console.log(this.state.searchText)}, 'Search'),
         ce('br'),
         ce('br'),
-        ce('div', null, this.state.username + "'s Bins"),
+        ce('div', null, this.props.username + "'s Bins"),
         ce('br'),
         ce('div', null, this.state.bins.map((bin, index) => ce('div', {key: index, onClick: e => this.setState({ selected: bin.name })}, bin.name))),
         ce('br'),
