@@ -24,15 +24,15 @@ export default class HomeComponent extends React.Component {
       bins: [
         {
           name: 'Placeholder Bin  1',
-          articles: new Array(3).fill({ dateAdded: new Date(), img: 'https://via.placeholder.com/150' }),
+          articles: new Array(3).fill({ img: 'https://via.placeholder.com/150' }),
         },
         {
           name: 'Placeholder Bin  2',
-          articles: new Array(3).fill({ dateAdded: new Date(), img: 'https://via.placeholder.com/150' }),
+          articles: new Array(3).fill({ img: 'https://via.placeholder.com/150' }),
         },
         {
           name: 'Placeholder Bin  3',
-          articles: new Array(3).fill({ dateAdded: new Date(), img: 'https://via.placeholder.com/150' }),
+          articles: new Array(3).fill({ img: 'https://via.placeholder.com/150' }),
         },
       ],
     };

@@ -25,7 +25,6 @@ export default class BinPreviewComponent extends React.Component {
         this.props.bin.articles.map((article, index) =>
           ce('div', { key: index },
             ce('img', { src: article.img }),
-            ce('span', null, article.dateAdded.toDateString()),
           )
         ),
       ),
