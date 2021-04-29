@@ -1,5 +1,5 @@
-import { ce } from '../react-common.js';
-import Bin from '../models/Bin.js';
+import { ce } from '../../react-common.js';
+import Bin from '../../models/Bin.js';
 
 /**
  * @typedef BinPreviewComponentProps
