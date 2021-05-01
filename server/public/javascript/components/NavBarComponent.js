@@ -26,9 +26,9 @@ export default class NavBarComponent extends React.Component {
       ),
       ce('div', { className: 'align-right' },
         ce('ul', null,
-          ce('li', { onClick: this.props.onOutfitLogClicked }, 'Outfit Log'),
-          ce('li', { onClick: this.props.onMyWardrobeClicked }, 'My Wardrobe'),
-          ce('li', { onClick: this.props.onMyBinsClicked }, 'My Bins'),
+          ce('li', null, ce('a', { href: '#', onClick: this.props.onOutfitLogClicked }, 'Outfit Log')),
+          ce('li', null, ce('a', { href: '#', onClick: this.props.onMyWardrobeClicked }, 'My Wardrobe')),
+          ce('li', null, ce('a', { href: '#', onClick: this.props.onMyBinsClicked }, 'My Bins')),
         ),
       ),
     );
