@@ -7,6 +7,7 @@ import '../models/ClickCallback.js';
  * @property {ClickCallback} onOutfitLogClicked
  * @property {ClickCallback} onMyWardrobeClicked
  * @property {ClickCallback} onMyBinsClicked
+ * @property {ClickCallback} onLogoutClicked
  */
 
 /**
@@ -29,6 +30,7 @@ export default class NavBarComponent extends React.Component {
           ce('li', null, ce('a', { href: '#', onClick: this.props.onOutfitLogClicked }, 'Outfit Log')),
           ce('li', null, ce('a', { href: '#', onClick: this.props.onMyWardrobeClicked }, 'My Wardrobe')),
           ce('li', null, ce('a', { href: '#', onClick: this.props.onMyBinsClicked }, 'My Bins')),
+          ce('li', null, ce('a', { href: '#', onClick: this.props.onLogoutClicked }, 'Logout')),
         ),
       ),
     );
