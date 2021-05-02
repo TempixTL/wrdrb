@@ -1,6 +1,7 @@
 import { ce, csrfToken, versionedAsset } from '../react-common.js';
 import NavBarComponent from './NavBarComponent.js';
 import AuthenticationComponent from './authentication/AuthenticationComponent.js';
+import HomeComponent from './home/HomeComponent.js';
 import AuthenticatedUser from '../models/AuthenticatedUser.js';
 
 /**
@@ -21,6 +22,17 @@ export default class MainComponent extends React.Component {
       user: null,
     };
   }
+
+  loginFormSubmitted(username, password) {
+    this.setState({
+      user: new AuthenticatedUser('Testing User', 'tuser'),
+    });
+  }
+
+  registerFormSubmitted(username, password) {
+    console.log('Registering user', username, password);
+  }
+
   navbarOutfitLogClicked() {
     console.log('Outfit Log clicked');
   }
@@ -34,18 +46,26 @@ export default class MainComponent extends React.Component {
   }
 
   navbarLogoutClicked() {
-    console.log('Logout clicked');
+    this.setState({
+      user: null,
+    });
   }
 
   render() {
-    return ce('div', null,
-      ce(NavBarComponent, {
-        onOutfitLogClicked: () => this.navbarOutfitLogClicked(),
-        onMyWardrobeClicked: () => this.navbarMyWardrobeClicked(),
-        onMyBinsClicked: () => this.navbarMyBinsClicked(),
-        onLogoutClicked: () => this.navbarLogoutClicked(),
-      }),
-      ce(AuthenticationComponent),
-    );
+    if (this.state.user === null)
+      return ce(AuthenticationComponent, {
+        onLoginFormSubmit: (_, username, password) => this.loginFormSubmitted(username, password),
+        onRegisterFormSubmit: (_, username, password) => this.registerFormSubmitted(username, password),
+      });
+    else
+      return ce('div', null,
+        ce(NavBarComponent, {
+          onOutfitLogClicked: () => this.navbarOutfitLogClicked(),
+          onMyWardrobeClicked: () => this.navbarMyWardrobeClicked(),
+          onMyBinsClicked: () => this.navbarMyBinsClicked(),
+          onLogoutClicked: () => this.navbarLogoutClicked(),
+        }),
+        ce(HomeComponent),
+      );
   }
 }

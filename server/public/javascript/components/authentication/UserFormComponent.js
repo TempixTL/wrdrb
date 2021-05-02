@@ -1,4 +1,5 @@
 import { ce } from '../../react-common.js';
+import '../../models/UserFormComponentSubmitCallback.js';
 
 /**
  * @typedef UserFormComponentProps
@@ -7,11 +8,6 @@ import { ce } from '../../react-common.js';
  * @property {string} submitLabel The label text of the submit button.
  * @property {UserFormComponentSubmitCallback} onSubmit The callback when the
  * form is submitted.
- * 
- * @callback UserFormComponentSubmitCallback
- * @param {Event} event
- * @param {string} username
- * @param {string} password
  */
 
 /**
