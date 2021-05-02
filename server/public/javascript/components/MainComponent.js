@@ -36,6 +36,12 @@ export default class MainComponent extends React.Component {
     console.log('Registering user', username, password);
   }
 
+  navbarBrandClicked() {
+    this.setState({
+      currentPage: HomeComponent,
+    });
+  }
+
   navbarOutfitLogClicked() {
     console.log('Outfit Log clicked');
   }
@@ -65,6 +71,7 @@ export default class MainComponent extends React.Component {
     else
       return ce('div', null,
         ce(NavBarComponent, {
+          onBrandClicked: () => this.navbarBrandClicked(),
           onOutfitLogClicked: () => this.navbarOutfitLogClicked(),
           onMyWardrobeClicked: () => this.navbarMyWardrobeClicked(),
           onMyBinsClicked: () => this.navbarMyBinsClicked(),

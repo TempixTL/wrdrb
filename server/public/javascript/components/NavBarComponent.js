@@ -4,6 +4,7 @@ import '../models/ClickCallback.js';
 /**
  * @typedef NavBarComponentProps
  * @type {object}
+ * @property {ClickCallback} onBrandClicked
  * @property {ClickCallback} onOutfitLogClicked
  * @property {ClickCallback} onMyWardrobeClicked
  * @property {ClickCallback} onMyBinsClicked
@@ -23,7 +24,11 @@ export default class NavBarComponent extends React.Component {
   render() {
     return ce('div', { role: 'navigation' },
       ce('div', { className: 'align-left' },
-        ce('img', { src: 'https://via.placeholder.com/64', className: 'brand' }),
+        ce('img', {
+          src: 'https://via.placeholder.com/64',
+          onClick: this.props.onBrandClicked,
+          className: 'brand'
+        }),
       ),
       ce('div', { className: 'align-right' },
         ce('ul', null,
