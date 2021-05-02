@@ -1,6 +1,7 @@
 import { ce } from '../../react-common.js';
 import BinPreviewComponent from './BinPreviewComponent.js';
 import '../../models/PageLikeComponentProps.js';
+import '../../models/Bin.js';
 
 /**
  * A page-like component which represents the home page of the application.

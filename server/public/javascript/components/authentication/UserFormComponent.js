@@ -13,8 +13,6 @@ import '../../models/UserFormComponentSubmitCallback.js';
 /**
  * Renders a single UserForm.
  * For example, a login form or a registration form.
- * 
- * @param {UserFormComponentProps} props
  */
 export default class UserFormComponent extends React.Component {
   constructor(props) {
