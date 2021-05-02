@@ -2,6 +2,7 @@ import { ce, csrfToken, versionedAsset } from '../react-common.js';
 import NavBarComponent from './NavBarComponent.js';
 import AuthenticationComponent from './authentication/AuthenticationComponent.js';
 import HomeComponent from './home/HomeComponent.js';
+import BinComponent from './BinComponent.js';
 import AuthenticatedUser from '../models/AuthenticatedUser.js';
 
 /**
@@ -17,9 +18,11 @@ export default class MainComponent extends React.Component {
      * @typedef MainComponentState
      * @type {object}
      * @property {?AuthenticatedUser} user
+     * @property {React.Component} currentPage
      */
     this.state = {
       user: null,
+      currentPage: HomeComponent,
     };
   }
 
@@ -42,7 +45,9 @@ export default class MainComponent extends React.Component {
   }
 
   navbarMyBinsClicked() {
-    console.log('My Bins clicked');
+    this.setState({
+      currentPage: BinComponent,
+    });
   }
 
   navbarLogoutClicked() {
@@ -65,7 +70,7 @@ export default class MainComponent extends React.Component {
           onMyBinsClicked: () => this.navbarMyBinsClicked(),
           onLogoutClicked: () => this.navbarLogoutClicked(),
         }),
-        ce(HomeComponent),
+        ce(this.state.currentPage),
       );
   }
 }
