@@ -1,4 +1,5 @@
 import { ce } from '../../react-common.js';
+import '../../models/UserFormComponentSubmitCallback.js';
 
 /**
  * @typedef UserFormComponentProps
@@ -7,18 +8,11 @@ import { ce } from '../../react-common.js';
  * @property {string} submitLabel The label text of the submit button.
  * @property {UserFormComponentSubmitCallback} onSubmit The callback when the
  * form is submitted.
- * 
- * @callback UserFormComponentSubmitCallback
- * @param {Event} event
- * @param {string} username
- * @param {string} password
  */
 
 /**
  * Renders a single UserForm.
  * For example, a login form or a registration form.
- * 
- * @param {UserFormComponentProps} props
  */
 export default class UserFormComponent extends React.Component {
   constructor(props) {
@@ -26,6 +20,12 @@ export default class UserFormComponent extends React.Component {
     /** @type {UserFormComponentProps} */
     this.props;
 
+    /**
+     * @typedef UserFormComponentState
+     * @type {object}
+     * @property {string} username
+     * @property {string} password
+     */
     this.state = {
       username: '',
       password: '',

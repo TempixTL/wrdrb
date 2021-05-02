@@ -1,19 +1,23 @@
 import { ce } from '../../react-common.js';
 import UserFormComponent from './UserFormComponent.js';
+import '../../models/UserFormComponentSubmitCallback.js';
+
+/**
+ * @typedef AuthenticationComponentProps
+ * @type {object}
+ * @property {UserFormComponentSubmitCallback} onLoginFormSubmit
+ * @property {UserFormComponentSubmitCallback} onRegisterFormSubmit
+ */
 
 /**
  * A page-like component that handles authenticating users. This includes login
  * as well as registration.
  */
 export default class AuthenticationComponent extends React.Component {
-  onLoginFormSubmit(e, username, password) {
-    console.log('Login Pressed');
-    console.log(e, username, password);
-  }
-
-  onRegisterFormSubmit(e, username, password) {
-    console.log('Register Pressed');
-    console.log(e, username, password);
+  constructor(props) {
+    super(props);
+    /** @type {AuthenticationComponentProps} */
+    this.props;
   }
 
   render() {
@@ -21,11 +25,11 @@ export default class AuthenticationComponent extends React.Component {
       ce(UserFormComponent, {
         title: 'Login',
         submitLabel: 'Login',
-        onSubmit: this.onLoginFormSubmit }),
+        onSubmit: this.props.onLoginFormSubmit }),
       ce(UserFormComponent, {
         title: 'Register',
         submitLabel: 'Register',
-        onSubmit: this.onRegisterFormSubmit }),
+        onSubmit: this.props.onRegisterFormSubmit }),
     );
   }
 }
