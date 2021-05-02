@@ -28,7 +28,7 @@ export default class MainComponent extends React.Component {
 
   loginFormSubmitted(username, password) {
     this.setState({
-      user: new AuthenticatedUser('Testing User', 'tuser'),
+      user: new AuthenticatedUser('Testing User', 'testing_user'),
     });
   }
 
@@ -77,7 +77,7 @@ export default class MainComponent extends React.Component {
           onMyBinsClicked: () => this.navbarMyBinsClicked(),
           onLogoutClicked: () => this.navbarLogoutClicked(),
         }),
-        ce(this.state.currentPage),
+        ce(this.state.currentPage, { username: this.state.user.username }),
       );
   }
 }

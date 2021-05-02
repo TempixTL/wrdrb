@@ -1,11 +1,6 @@
 import { ce } from '../../react-common.js';
 import BinPreviewComponent from './BinPreviewComponent.js';
-
-/**
- * @typedef HomeComponentProps
- * @type {object}
- * @property {string} username The username of the logged-in user
- */
+import '../../models/PageLikeComponentProps.js';
 
 /**
  * A page-like component which represents the home page of the application.
@@ -13,7 +8,7 @@ import BinPreviewComponent from './BinPreviewComponent.js';
 export default class HomeComponent extends React.Component {
   constructor(props) {
     super(props);
-    /** @type {HomeComponentProps} */
+    /** @type {PageLikeComponentProps} */
     this.props;
 
     /**

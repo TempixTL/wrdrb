@@ -1,9 +1,5 @@
 import { ce, csrfToken, versionedAsset } from '../react-common.js';
-
-/**
- * @typedef {object} BinComponentProps
- * @property {string} username
- */
+import '../models/PageLikeComponentProps.js';
 
 /**
  * A page-like component that displays all the user's bins.
@@ -11,7 +7,7 @@ import { ce, csrfToken, versionedAsset } from '../react-common.js';
 export default class BinComponent extends React.Component {
     constructor(props){
         super(props);
-        /** @type {BinComponentProps} */
+        /** @type {PageLikeComponentProps} */
         this.props;
 
         /**
