@@ -2,6 +2,7 @@ import { ce, csrfToken, versionedAsset } from '../react-common.js';
 import NavBarComponent from './NavBarComponent.js';
 import AuthenticationComponent from './authentication/AuthenticationComponent.js';
 import HomeComponent from './home/HomeComponent.js';
+import OutfitLogComponent from './OutfitLogComponent.js';
 import BinComponent from './BinComponent.js';
 import AuthenticatedUser from '../models/AuthenticatedUser.js';
 
@@ -43,7 +44,9 @@ export default class MainComponent extends React.Component {
   }
 
   navbarOutfitLogClicked() {
-    console.log('Outfit Log clicked');
+    this.setState({
+      currentPage: OutfitLogComponent,
+    });
   }
 
   navbarMyWardrobeClicked() {

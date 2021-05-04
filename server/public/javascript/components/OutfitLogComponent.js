@@ -3,7 +3,7 @@ import { ce, csrfToken, versionedAsset } from '../react-common.js';
 const outfitLogRoute = document.getElementById("outfitLogRoute").value;
 
 
-export default class LogComponent extends React.Component {
+export default class OutfitLogComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
