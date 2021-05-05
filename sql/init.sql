@@ -1,2 +1,2 @@
-CREATE USER wrdrb WITH PASSWORD 'password';
+CREATE USER wrdrb;
 CREATE DATABASE wrdrb WITH OWNER=wrdrb;
