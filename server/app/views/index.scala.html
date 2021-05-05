@@ -1,12 +1,9 @@
-@(message: String)
+@()(implicit request: RequestHeader)
 
-@main("Play with Scala.js") {
-
-  <h2>Play and Scala.js share a same message</h2>
-  <ul>
-    <li>Play shouts out: <em>@message</em></li>
-    <li>Scala.js shouts out: <em id="scalajsShoutOut"></em></li>
-  </ul>
-
-  <div id="root"></div>
+@main("wrdrb") {
+  <div id="react-root"></div>
+  <input type="hidden" id="csrfToken" value="@helper.CSRF.getToken.value">
+  <input type="hidden" id="outfitLogRoute" value="@routes.WrdrbApplication.outfitLog">
+  @*<input type='file' id='fileUpload' onChange={props.onChange} /> *@
+  <script src="@routes.Assets.versioned("javascript/react-main.js")" type="module"></script>
 }

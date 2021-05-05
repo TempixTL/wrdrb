@@ -3,7 +3,9 @@
 # ~~~~
 
 # Home page
-GET        /                             controllers.Application.index
+GET        /                             controllers.WrdrbApplication.index
+GET        /log                          controllers.WrdrbApplication.outfitLog
+
 
 # Prefix must match `play.assets.urlPrefix`
 GET        /assets/*file                 controllers.Assets.at(file)
