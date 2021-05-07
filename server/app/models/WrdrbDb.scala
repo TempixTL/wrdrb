@@ -27,7 +27,7 @@ class WrdrbDb(db: Database)(implicit ec: ExecutionContext) {
   def validateLogin(username: String, password: String): Future[Option[User]] = {
     val matches = db.run(Users.filter(row => row.username === username && row.password === password).result)
     matches.map(_ match {
-      case user::Nil => Some(User(user.id, user.username))
+      case Seq(user) => Some(User(user.id, user.username))
       case _ => None
     })
   }
