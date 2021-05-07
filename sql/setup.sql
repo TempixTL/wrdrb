@@ -1,27 +1,27 @@
 \c wrdrb;
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   username varchar(20) NOT NULL,
   password varchar(200) NOT NULL
 );
 
-CREATE TABLE colors (
+CREATE TABLE IF NOT EXISTS colors (
   id SERIAL PRIMARY KEY,
   name varchar(20) NOT NULL
 );
 
-CREATE TABLE clothing_types (
+CREATE TABLE IF NOT EXISTS clothing_types (
   id SERIAL PRIMARY KEY,
   name varchar(20) NOT NULL
 );
 
-CREATE TABLE weather_conditions (
+CREATE TABLE IF NOT EXISTS weather_conditions (
   id SERIAL PRIMARY KEY,
   name varchar(40) NOT NULL
 );
 
-CREATE TABLE articles (
+CREATE TABLE IF NOT EXISTS articles (
   id SERIAL PRIMARY KEY,
   user_id INT NOT NULL,
   brand varchar(100) NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE articles (
       REFERENCES colors(id)
 );
 
-CREATE TABLE outfits (
+CREATE TABLE IF NOT EXISTS outfits (
   id SERIAL PRIMARY KEY,
   user_id INT NOT NULL,
   outfit_date timestamp,
@@ -54,7 +54,7 @@ CREATE TABLE outfits (
       REFERENCES users(id)
 );
 
-CREATE TABLE outfits_articles (
+CREATE TABLE IF NOT EXISTS outfits_articles (
   outfit_id INT NOT NULL,
   article_id INT NOT NULL,
   CONSTRAINT fk_outfit_id
@@ -65,7 +65,7 @@ CREATE TABLE outfits_articles (
       REFERENCES articles(id)
 );
 
-CREATE TABLE bins (
+CREATE TABLE IF NOT EXISTS bins (
   id SERIAL PRIMARY KEY,
   user_id INT NOT NULL,
   name varchar(100) NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE bins (
       REFERENCES users(id)
 );
 
-CREATE TABLE articles_bins (
+CREATE TABLE IF NOT EXISTS articles_bins (
   bin_id INT NOT NULL,
   article_id INT NOT NULL,
   CONSTRAINT fk_bin_id
