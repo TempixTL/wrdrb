@@ -1,0 +1,2 @@
+CREATE USER wrdrb;
+CREATE DATABASE wrdrb WITH OWNER=wrdrb;
