@@ -12,5 +12,9 @@ import scala.concurrent.{Future, ExecutionContext}
   * @param db The database which stores persistent data for the app.
   * @param ec The execution context with which to run asynchronous code.
   */
-class WrdrbDb(db: Database)(implicit ec: ExecutionContext) {}
+class WrdrbDb(db: Database)(implicit ec: ExecutionContext) {
+  def validateLogin(username: String, password: String) = ???
+  def validateRegister(username: String, password: String) = ???
+  // et ceterea
+}
 
