@@ -72,6 +72,22 @@ class WrdrbDb(db: Database)(implicit ec: ExecutionContext) {
   }
 
   /**
+    * Asynchronously returns the articles for a bin.
+    *
+    * @param binId The id of the bin.
+    * @return `Seq[Article]` on success, `Nil` on failure.
+    */
+  def getBin(binId: Int): Future[Seq[Article]] = {
+    db.run(
+      (for {
+        articleBin <- ArticleBins if row.bin_id === binId
+      } yield {
+        articleBin.article_id
+      }).result
+    ).map(articleBinIds => articleBinsIds.map(id => db.run(Articles.filter(row => row.id === id).result)))
+  }
+
+  /**
     * Asynchronously add a bin.
     *
     * @param userId The id of the requesting user.
