@@ -3,5 +3,7 @@
 @main("wrdrb") {
   <div id="react-root"></div>
   <input type="hidden" id="csrfToken" value="@helper.CSRF.getToken.value">
+  <input type="hidden" id="outfitLogRoute" value="@routes.Application.outfitLog">
+  @*<input type='file' id='fileUpload' onChange={props.onChange} /> *@
   <script src="@routes.Assets.versioned("javascript/react-main.js")" type="module"></script>
 }
