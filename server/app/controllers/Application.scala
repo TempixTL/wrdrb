@@ -10,6 +10,8 @@ import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 import slick.jdbc.PostgresProfile.api._
 import models.WrdrbDb
+import play.api.libs.json._
+import models._
 
 //            Potential Types for Bins Method
 // case class User(username: String)
@@ -20,10 +22,21 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
     (implicit ec: ExecutionContext) extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
   private val database = new WrdrbDb(db)
 
+  implicit val articleWriter = Json.writes[Article]
+  implicit val outfitWriter = Json.writes[Outfit]
+
   def index = Action.async { implicit request =>
     Future {
       Ok(views.html.index())
     }
+  }
+  def outfitLog = Action.async {implicit request => 
+    println("hi!")
+    val username = "lizzie" //TODO: replace with call from session
+    val outfitData = database.getOutfits(username)
+    println("got outfits")
+    outfitData.map(outfits=> Ok(Json.toJson(outfits)))
+
   }
 
   //            Rough Draft Method for Getting Bins

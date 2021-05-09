@@ -3,8 +3,8 @@
 # ~~~~
 
 # Home page
-GET        /                             controllers.WrdrbApplication.index
-GET        /log                          controllers.WrdrbApplication.outfitLog
+GET        /                             controllers.Application.index
+GET        /log                          controllers.Application.outfitLog
 
 
 # Prefix must match `play.assets.urlPrefix`
