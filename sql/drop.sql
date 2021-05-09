@@ -1,0 +1,2 @@
+DROP DATABASE wrdrb;
+DROP USER wrdrb;
