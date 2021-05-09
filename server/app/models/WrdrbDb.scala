@@ -78,7 +78,9 @@ class WrdrbDb(db: Database)(implicit ec: ExecutionContext) {
     * @param name The name of the new bin.
     * @return `Some(Bin)` on success, `None` on already exists.
     */
-  def addBin(userId: Int, name: String): Future[Option[Bin]] = {
+  def addBin(username: String, name: String): Future[Option[Bin]] = {
+    val user = db.run(Users.filter(row => row.username === username).result)
+    val userId = user.id
     val matches = db.run(Bins.filter(row => row.user_id === userId && row.name === name).result)
     matches.flatMap(_ match {
       case Nil =>
