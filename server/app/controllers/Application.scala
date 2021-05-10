@@ -43,12 +43,12 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
   }
 
   def validateUser = Action.async { implicit request =>
-    withJsonBody[AuthenticatingUser] { authUser =>
-      val AuthenticatingUser(username, password) = authUser
-      database.validateLogin(username, password).map(_ match {
-        case Some(user) => Ok(Json.toJson(user))
-        case None       => Unauthorized("Authentication Failed")
-      })
+    withJsonBody[AuthenticatingUser] {
+      case AuthenticatingUser(username, password) =>
+        database.validateLogin(username, password).map {
+          case Some(user) => Ok(Json.toJson(user))
+          case None       => Unauthorized("Authentication Failed")
+        }
     }
   }
 
