@@ -22,6 +22,9 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
     (implicit ec: ExecutionContext) extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
   private val database = new WrdrbDb(db)
 
+  // Implicit Reads and Writes
+  import models.User.Implicits._
+  import models.AuthenticatingUser.Implicits._
   implicit val articleWriter = Json.writes[Article]
   implicit val outfitWriter = Json.writes[Outfit]
 
@@ -39,6 +42,33 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
 
   }
 
+  def validateUser = Action.async { implicit request =>
+    withJsonBody[AuthenticatingUser] {
+      case AuthenticatingUser(username, password) =>
+        database.validateLogin(username, password).map {
+          case Some(user) => Ok(Json.toJson(user))
+          case None       => Unauthorized("Authentication Failed")
+        }
+    }
+  }
+
+  def registerUser = Action.async { implicit request =>
+    withJsonBody[AuthenticatingUser] { 
+      case AuthenticatingUser(username, password) =>
+        database.validateRegister(username, password).map {
+          case Some(user) => Ok(Json.toJson(user))
+          case None       => Conflict("Username already taken")
+        }
+    }
+  }
+
+  def getUser(userId: String) = Action.async { implicit request =>
+    database.getUser(userId).map {
+      case Some(user) => Ok(Json.toJson(user))
+      case None       => NotFound("User not found.")
+    }
+  }
+
   //            Rough Draft Method for Getting Bins
   //
   // def bins = Action { implicit request => 
@@ -53,4 +83,12 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
   //           }.getOrElse(Redirect(routes.Application.index()))
   // }
 
+  private def withJsonBody[A](onSuccess: A => Future[Result])(implicit request: Request[AnyContent], reads: Reads[A]): Future[Result] = {
+    request.body.asJson.map { body =>
+      Json.fromJson[A](body) match {
+        case JsSuccess(aData, _) => onSuccess(aData)
+        case e @ JsError(_) => Future(BadRequest("Missing required information."))
+      }
+    }.getOrElse(Future(BadRequest("Unable to parse body as JSON.")))
+  }
 }
