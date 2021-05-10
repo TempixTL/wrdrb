@@ -52,6 +52,16 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
     }
   }
 
+  def registerUser = Action.async { implicit request =>
+    withJsonBody[AuthenticatingUser] { 
+      case AuthenticatingUser(username, password) =>
+        database.validateRegister(username, password).map {
+          case Some(user) => Ok(Json.toJson(user))
+          case None       => Conflict("Username already taken")
+        }
+    }
+  }
+
   //            Rough Draft Method for Getting Bins
   //
   // def bins = Action { implicit request => 
