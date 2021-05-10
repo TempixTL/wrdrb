@@ -28,13 +28,16 @@ export default class MainComponent extends React.Component {
   }
 
   loginFormSubmitted(username, password) {
+    // TODO authenticate username and password
     this.setState({
-      user: new AuthenticatedUser('Testing User', 'testing_user'),
+      user: new AuthenticatedUser('1', 'wrdrb'),
     });
   }
 
   registerFormSubmitted(username, password) {
+    // TODO register user with username and password
     console.log('Registering user', username, password);
+    this.loginFormSubmitted(username, password);
   }
 
   navbarBrandClicked() {
