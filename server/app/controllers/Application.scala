@@ -61,4 +61,8 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
       }
     }.getOrElse(Future { internalErrorResponse })
   }
+
+  private def internalErrorResponse = {
+    InternalServerError("An internal error occurred.")
+  }
 }
