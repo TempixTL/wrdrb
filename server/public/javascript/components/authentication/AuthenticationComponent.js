@@ -26,7 +26,7 @@ export default class AuthenticationComponent extends React.Component {
 
   render() {
     return ce('div', null,
-      ce('div', { className: 'row'},
+      ce('div', { className: 'row section'},
         ce('div', { className: 'col s12' },
           ce('div', { className: 'valign-wrapper' },
             ce('img', { src: versionedAsset('images/logo.svg') }),
@@ -34,7 +34,7 @@ export default class AuthenticationComponent extends React.Component {
           ),
         ),
       ),
-      ce('div', { className: 'row' },
+      ce('div', { className: 'row section' },
         ce('div', { className: 'col s12 m6 offset-m3 center-align' },
           ce('img', { src: versionedAsset('images/fashion-tshirts-colour.svg'), className: 'responsive-img' }),
         ),
