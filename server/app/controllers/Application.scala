@@ -62,6 +62,13 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
     }
   }
 
+  def getUser(userId: String) = Action.async { implicit request =>
+    database.getUser(userId).map {
+      case Some(user) => Ok(Json.toJson(user))
+      case None       => NotFound("User not found.")
+    }
+  }
+
   //            Rough Draft Method for Getting Bins
   //
   // def bins = Action { implicit request => 
