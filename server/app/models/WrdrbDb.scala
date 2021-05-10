@@ -72,6 +72,21 @@ class WrdrbDb(db: Database)(implicit ec: ExecutionContext) {
     })
   }
 
+  /**
+    * Asynchronously gets a `User` with a given `userId`.
+    *
+    * @param userId The ID of the `User` to retrieve.
+    * @return `Some(User)` if the `User` with ID `userId` exists, otherwise
+    * `None`.
+    */
+  def getUser(userId: String): Future[Option[User]] = {
+    val matches = db.run(Users.filter(_.id.asColumnOf[String] === userId).result)
+    matches.map {
+      case Seq(UsersRow(id, username, _)) => Some(User(id, username))
+      case _ => None
+    }
+  }
+
   //                  ------ Bin Methods ------
   //
   /**
