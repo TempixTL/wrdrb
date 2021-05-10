@@ -74,7 +74,7 @@ export default class MainComponent extends React.Component {
             onRegisterFormSubmit: (_, username, password) => this.registerFormSubmitted(username, password),
           });
         else 
-          return ce('div', { className: 'container' },
+          return ce('div', null,
             ce(NavBarComponent, {
               onBrandClicked: () => this.navbarBrandClicked(),
               onOutfitLogClicked: () => this.navbarOutfitLogClicked(),
