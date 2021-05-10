@@ -66,21 +66,25 @@ export default class MainComponent extends React.Component {
   }
 
   render() {
-    if (this.state.user === null)
-      return ce(AuthenticationComponent, {
-        onLoginFormSubmit: (_, username, password) => this.loginFormSubmitted(username, password),
-        onRegisterFormSubmit: (_, username, password) => this.registerFormSubmitted(username, password),
-      });
-    else
-      return ce('div', null,
-        ce(NavBarComponent, {
-          onBrandClicked: () => this.navbarBrandClicked(),
-          onOutfitLogClicked: () => this.navbarOutfitLogClicked(),
-          onMyWardrobeClicked: () => this.navbarMyWardrobeClicked(),
-          onMyBinsClicked: () => this.navbarMyBinsClicked(),
-          onLogoutClicked: () => this.navbarLogoutClicked(),
-        }),
-        ce(this.state.currentPage, { username: this.state.user.username }),
-      );
+    return ce('div', { className: 'container' },
+      (() => {
+        if (this.state.user === null)
+          return ce(AuthenticationComponent, {
+            onLoginFormSubmit: (_, username, password) => this.loginFormSubmitted(username, password),
+            onRegisterFormSubmit: (_, username, password) => this.registerFormSubmitted(username, password),
+          });
+        else 
+          return ce('div', { className: 'container' },
+            ce(NavBarComponent, {
+              onBrandClicked: () => this.navbarBrandClicked(),
+              onOutfitLogClicked: () => this.navbarOutfitLogClicked(),
+              onMyWardrobeClicked: () => this.navbarMyWardrobeClicked(),
+              onMyBinsClicked: () => this.navbarMyBinsClicked(),
+              onLogoutClicked: () => this.navbarLogoutClicked(),
+            }),
+            ce(this.state.currentPage, { username: this.state.user.username }),
+          );
+      })(),
+    );
   }
 }
