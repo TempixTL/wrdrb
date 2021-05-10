@@ -5,7 +5,7 @@ export default class AuthenticatedUser {
   /**
    * Creates an AuthenticatedUser model with a given `id` and associated
    * `username`.
-   * @param {number} id The ID of the user in the database.
+   * @param {string} id The ID of the user in the database.
    * @param {string} username The chosen screen-name of the user.
    */
   constructor(id, username) {
