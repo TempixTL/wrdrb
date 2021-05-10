@@ -6,6 +6,8 @@
 GET        /                             controllers.Application.index
 GET        /log                          controllers.Application.outfitLog
 
+# User Routes
+POST       /user/validate               controllers.Application.validateUser
 
 # Prefix must match `play.assets.urlPrefix`
 GET        /assets/*file                 controllers.Assets.at(file)
