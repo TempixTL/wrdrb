@@ -22,6 +22,9 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
     (implicit ec: ExecutionContext) extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
   private val database = new WrdrbDb(db)
 
+  // Implicit Reads and Writes
+  import models.User.Implicits._
+  import models.AuthenticatingUser.Implicits._
   implicit val articleWriter = Json.writes[Article]
   implicit val outfitWriter = Json.writes[Outfit]
 
@@ -37,6 +40,16 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
     println("got outfits")
     outfitData.map(outfits=> Ok(Json.toJson(outfits)))
 
+  }
+
+  def validateUser = Action.async { implicit request =>
+    withJsonBody[AuthenticatingUser] { authUser =>
+      val AuthenticatingUser(username, password) = authUser
+      database.validateLogin(username, password).map(_ match {
+        case Some(user) => Ok(Json.toJson(user))
+        case None       => Unauthorized("Authentication Failed")
+      })
+    }
   }
 
   //            Rough Draft Method for Getting Bins
