@@ -70,12 +70,8 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
     request.body.asJson.map { body =>
       Json.fromJson[A](body) match {
         case JsSuccess(aData, _) => onSuccess(aData)
-        case e @ JsError(_) => Future { internalErrorResponse }
+        case e @ JsError(_) => Future(BadRequest("Missing required information."))
       }
-    }.getOrElse(Future { internalErrorResponse })
-  }
-
-  private def internalErrorResponse = {
-    InternalServerError("An internal error occurred.")
+    }.getOrElse(Future(BadRequest("Unable to parse body as JSON.")))
   }
 }
