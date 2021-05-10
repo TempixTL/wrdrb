@@ -53,4 +53,12 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
   //           }.getOrElse(Redirect(routes.Application.index()))
   // }
 
+  private def withJsonBody[A](onSuccess: A => Future[Result])(implicit request: Request[AnyContent], reads: Reads[A]): Future[Result] = {
+    request.body.asJson.map { body =>
+      Json.fromJson[A](body) match {
+        case JsSuccess(aData, _) => onSuccess(aData)
+        case e @ JsError(_) => Future { internalErrorResponse }
+      }
+    }.getOrElse(Future { internalErrorResponse })
+  }
 }
