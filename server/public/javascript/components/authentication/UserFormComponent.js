@@ -61,7 +61,7 @@ export default class UserFormComponent extends React.Component {
           }),
           ce('label', { htmlFor: passwordId }, 'Password'),
         ),
-        ce('button', { type: 'submit', className: 'btn waves-effect waves-light' },
+        ce('button', { type: 'submit', className: 'btn waves-effect waves-light z-depth-0' },
           ce('i', { className: 'material-icons right' }, 'login'),
           this.props.submitLabel,
         ),
