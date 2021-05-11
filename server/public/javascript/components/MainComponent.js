@@ -69,13 +69,15 @@ export default class MainComponent extends React.Component {
   }
 
   render() {
-    return ce('div', { className: 'container' },
+    return ce('div', null,
       (() => {
         if (this.state.user === null)
-          return ce(AuthenticationComponent, {
-            onLoginFormSubmit: (_, username, password) => this.loginFormSubmitted(username, password),
-            onRegisterFormSubmit: (_, username, password) => this.registerFormSubmitted(username, password),
-          });
+          return ce('div', { className: 'container' },
+            ce(AuthenticationComponent, {
+              onLoginFormSubmit: (_, username, password) => this.loginFormSubmitted(username, password),
+              onRegisterFormSubmit: (_, username, password) => this.registerFormSubmitted(username, password),
+            }),
+          );
         else 
           return ce('div', null,
             ce(NavBarComponent, {
@@ -85,7 +87,9 @@ export default class MainComponent extends React.Component {
               onMyBinsClicked: () => this.navbarMyBinsClicked(),
               onLogoutClicked: () => this.navbarLogoutClicked(),
             }),
-            ce(this.state.currentPage, { username: this.state.user.username }),
+            ce('div', { className: 'container' },
+              ce(this.state.currentPage, { username: this.state.user.username }),
+            ),
           );
       })(),
     );

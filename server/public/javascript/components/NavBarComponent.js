@@ -1,4 +1,4 @@
-import { ce } from '../react-common.js';
+import { ce, versionedAsset } from '../react-common.js';
 import '../models/ClickCallback.js';
 
 /**
@@ -21,22 +21,40 @@ export default class NavBarComponent extends React.Component {
     this.props;
   }
 
+  closeNavBar() {
+    console.log(M.Sidenav);
+  }
+
+  componentDidMount() {
+    M.Sidenav.init(document.querySelectorAll('.sidenav'));
+  }
+
   render() {
-    return ce('div', { role: 'navigation' },
-      ce('div', { className: 'align-left' },
-        ce('img', {
-          src: 'https://via.placeholder.com/64',
-          onClick: this.props.onBrandClicked,
-          className: 'brand'
-        }),
-      ),
-      ce('div', { className: 'align-right' },
-        ce('ul', null,
-          ce('li', null, ce('a', { href: '#', onClick: this.props.onOutfitLogClicked }, 'Outfit Log')),
-          ce('li', null, ce('a', { href: '#', onClick: this.props.onMyWardrobeClicked }, 'My Wardrobe')),
-          ce('li', null, ce('a', { href: '#', onClick: this.props.onMyBinsClicked }, 'My Bins')),
-          ce('li', null, ce('a', { href: '#', onClick: this.props.onLogoutClicked }, 'Logout')),
+    return ce('div', null,
+      ce('nav', null,
+        ce('div', { className: 'nav-wrapper' },
+          ce('img', {
+            src: versionedAsset('images/logo-nav.svg'),
+            onClick: this.props.onBrandClicked,
+            className: 'brand-logo',
+            style: { height: '125%', cursor: 'pointer' },
+          }),
+          ce('a', { href: '#', 'data-target': 'mobile-menu', className: 'sidenav-trigger' }, ce('i', { className: 'material-icons' }, 'menu')),
+          ce('div', { className: 'right hide-on-med-and-down' },
+            ce('ul', null,
+              ce('li', null, ce('a', { href: '#', onClick: this.props.onOutfitLogClicked }, 'Outfit Log')),
+              ce('li', null, ce('a', { href: '#', onClick: this.props.onMyWardrobeClicked }, 'My Wardrobe')),
+              ce('li', null, ce('a', { href: '#', onClick: this.props.onMyBinsClicked }, 'My Bins')),
+              ce('li', null, ce('a', { href: '#', onClick: this.props.onLogoutClicked }, 'Logout')),
+            ),
+          ),
         ),
+      ),
+      ce('ul', { id: 'mobile-menu', className: 'sidenav' },
+        ce('li', null, ce('a', { href: '#', onClick: this.props.onOutfitLogClicked, className: 'sidenav-close' }, 'Outfit Log')),
+        ce('li', null, ce('a', { href: '#', onClick: this.props.onMyWardrobeClicked, className: 'sidenav-close' }, 'My Wardrobe')),
+        ce('li', null, ce('a', { href: '#', onClick: this.props.onMyBinsClicked, className: 'sidenav-close' }, 'My Bins')),
+        ce('li', null, ce('a', { href: '#', onClick: this.props.onLogoutClicked, className: 'sidenav-close' }, 'Logout')),
       ),
     );
   }
