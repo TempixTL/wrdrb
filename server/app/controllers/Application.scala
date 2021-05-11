@@ -27,6 +27,7 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
   import models.AuthenticatingUser.Implicits._
   implicit val articleWriter = Json.writes[Article]
   implicit val outfitWriter = Json.writes[Outfit]
+  implicit val binWriter = Json.writes[Bin]
 
   def index = Action.async { implicit request =>
     Future {
@@ -69,19 +70,33 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
     }
   }
 
-  //            Rough Draft Method for Getting Bins
-  //
-  // def bins = Action { implicit request => 
-  //   request.body.asJson.map { body => 
-  //               Json.fromJson[User](body) match {
-  //                   case JsSuccess(user, path) => {   
-  //                       val bins = WRDRB.getBins(user.username)
-  //                       Ok(Json.toJson(bins)
-  //                   }
-  //                   case e @ JsError(_) => Ok(Json.toJson(false))
-  //               }
-  //           }.getOrElse(Redirect(routes.Application.index()))
-  // }
+ def getAllBins = Action.async {implicit request => 
+    withSessionUsername { username =>
+      val bins = database.getAllBins(username)
+      bins.map(bins => Ok(Json.toJson(bins)))
+    }
+  }
+
+  def getBin(binId: Int) = Action.async {implicit request =>
+    withSessionUsername { username =>
+      val bin = database.getBin(binId)
+      bin.map(bin => Ok(Json.toJson(bin)))
+    }
+  }
+
+  def addBin(name: String) = Action.async {implicit request =>
+    withSessionUsername { username => 
+      val res = database.addBin(username, name)
+      res.map(res => Ok(Json.toJson(res)))
+    }
+  }
+
+  def deleteBin(binId: Int) = Action.async {implicit request =>
+    withSessionUsername { username => 
+      val res = database.deleteBin(binId)
+      res.map(res => Ok(Json.toJson(res)))
+    }
+  }
 
   private def withJsonBody[A](onSuccess: A => Future[Result])(implicit request: Request[AnyContent], reads: Reads[A]): Future[Result] = {
     request.body.asJson.map { body =>
