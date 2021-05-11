@@ -23,11 +23,7 @@
 /* Overriding Materialize CSS' Default Theming Colors */
 
 /* Buttons */
-.btn .btn-large .btn-small {
-  background-color: var(--brand-primary) !important;
-}
-
-.btn:active .btn-large:active .btn-small:active {
+.btn, .btn-large, .btn-small {
   background-color: var(--brand-primary) !important;
 }
 
