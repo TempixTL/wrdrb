@@ -126,18 +126,26 @@ class WrdrbDb(db: Database)(implicit ec: ExecutionContext) {
   /**
     * Asynchronously add a bin.
     *
-    * @param userId The id of the requesting user.
+    * @param username The username of the requesting user.
     * @param name The name of the new bin.
-    * @return `Some(Bin)` on success, `None` on already exists.
+    * @return `true` on success, `false` on already exists.
     */
-  def addBin(userId: Int, name: String): Future[Boolean] = {
-    val matches = db.run(Bins.filter(row => row.name === name).result)
-    matches.flatMap(_ match {
-      case Nil => 
-        db.run(Bins += BinsRow(-1, userId, name))
-        Future.successful(true)
-      case _ => Future.successful(false)
-    })
+  def addBin(username: String, name: String): Future[Boolean] = {
+    db.run(
+      (for {
+        user <- Users if user.username === username
+      } yield {
+        user.id
+      }).result
+    ).map(ids => ids.map(id => {
+      val matches = db.run(Bins.filter(row => row.name === name).result)
+      matches.flatMap(_ match {
+        case Nil => 
+          db.run(Bins += BinsRow(-1, id, name))
+          Future.successful(true)
+        case _ => Future.successful(false)
+        })
+    }))
   }
 
   /**
