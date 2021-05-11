@@ -99,11 +99,11 @@ class WrdrbDb(db: Database)(implicit ec: ExecutionContext) {
     db.run(
       (for {
         user <- Users if user.username === username
-        bin <- Bins if bin.user_id === user.id
+        bin <- Bins if bin.userId === user.id
       } yield {
         bin
       }).result
-    ).map(bins => bins.map(bin => Bin(bin.id, bin.user_id, bin.name)))
+    ).map(bins => bins.map(bin => Bin(bin.id, bin.userId, bin.name)))
   }
 
   /**
@@ -115,11 +115,12 @@ class WrdrbDb(db: Database)(implicit ec: ExecutionContext) {
   def getBin(binId: Int): Future[Seq[Article]] = {
     db.run(
       (for {
-        articleBin <- ArticleBins if row.bin_id === binId
+        articleBin <- ArticlesBins if articleBin.binId === binId
+        article <- Articles if article.id === articleBin.articleId
       } yield {
-        articleBin.article_id
+        article
       }).result
-    ).map(articleBinIds => articleBinsIds.map(id => db.run(Articles.filter(row => row.id === id).result)))
+    ).map(articles => articles.map(ar => Article(ar.brand, ar.material, ar.clothingType, ar.color, ar.weatherCondition)))
   }
 
   /**
@@ -129,16 +130,13 @@ class WrdrbDb(db: Database)(implicit ec: ExecutionContext) {
     * @param name The name of the new bin.
     * @return `Some(Bin)` on success, `None` on already exists.
     */
-  def addBin(username: String, name: String): Future[Option[Bin]] = {
-    val user = db.run(Users.filter(row => row.username === username).result)
-    val userId = user.id
-    val matches = db.run(Bins.filter(row => row.user_id === userId && row.name === name).result)
+  def addBin(userId: Int, name: String): Future[Boolean] = {
+    val matches = db.run(Bins.filter(row => row.name === name).result)
     matches.flatMap(_ match {
-      case Nil =>
-        val insertQuery = Bins returning Bins.map(_.id)
-        db.run(insertQuery += BinsRow(-1, userId, name))
-          .map(binId => Some(Bin(binId, userId, name)))
-      case _ => Future(None)
+      case Nil => 
+        db.run(Bins += BinsRow(-1, userId, name))
+        Future.successful(true)
+      case _ => Future.successful(false)
     })
   }
 
@@ -160,13 +158,12 @@ class WrdrbDb(db: Database)(implicit ec: ExecutionContext) {
     * @return `true` on success, `false` on failure.
     */
   def addArticleToBin(binId: Int, articleId: Int): Future[Boolean] = {
-    val matches = db.run(ArticlesBins.filter(row => row.id === binId && row.article_id === articleId).result)
+    val matches = db.run(ArticlesBins.filter(row => row.binId === binId && row.articleId=== articleId).result)
     matches.flatMap(_ match {
       case Nil => 
-        val insertQuery = ArticlesBins returning ArticlesBins.map(_.id)
-        db.run(insertQuery += ArticlesBinsRow(-1, binId, articleId))
-        true
-      case _ => false
+        db.run(ArticlesBins += ArticlesBinsRow(binId, articleId))
+        Future.successful(true)
+      case _ => Future.successful(false)
     })
   }
 
@@ -178,7 +175,7 @@ class WrdrbDb(db: Database)(implicit ec: ExecutionContext) {
     * @return `true` on success, `false` on failure.
     */
   def removeArticleFromBin(binId: Int, articleId: Int): Future[Boolean] = {
-    db.run(ArticleBins.filter(row => row.id === binId && row.articleId === articleId).delete).map(count => count > 0)
+    db.run(ArticlesBins.filter(row => row.binId === binId && row.articleId === articleId).delete).map(count => count > 0)
   }
 
 }
