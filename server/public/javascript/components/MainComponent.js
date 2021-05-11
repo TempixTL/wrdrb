@@ -29,8 +29,11 @@ export default class MainComponent extends React.Component {
 
   loginFormSubmitted(username, password) {
     // TODO authenticate username and password
+    const id = '1';
+    username = 'wrdrb';
+    M.toast({html: `Signed in as ${username}.`});
     this.setState({
-      user: new AuthenticatedUser('1', 'wrdrb'),
+      user: new AuthenticatedUser(id, username),
     });
   }
 
@@ -63,6 +66,7 @@ export default class MainComponent extends React.Component {
   }
 
   navbarLogoutClicked() {
+    M.toast({html: 'Successfully signed out.'});
     this.setState({
       user: null,
     });
