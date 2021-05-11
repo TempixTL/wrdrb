@@ -41,7 +41,7 @@ export default class AuthenticationComponent extends React.Component {
       ),
       ce('div', { className: 'row' },
         ce('div', { className: 'col s12 m8 offset-m2'},
-          ce('div', { className: 'card' },
+          ce('div', { className: 'card hoverable' },
             ce('div', { className: 'card-tabs' },
               ce('ul', { className: 'tabs tabs-fixed-width' },
                 ce('li', { className: 'tab' }, ce('a', { href: '#register-form', className: 'active' }, 'Register')),
