@@ -87,7 +87,7 @@ export default class MainComponent extends React.Component {
               onMyBinsClicked: () => this.navbarMyBinsClicked(),
               onLogoutClicked: () => this.navbarLogoutClicked(),
             }),
-            ce('div', { className: 'container' },
+            ce('div', { className: 'container section' },
               ce(this.state.currentPage, { username: this.state.user.username }),
             ),
           );
