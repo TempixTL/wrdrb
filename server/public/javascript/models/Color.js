@@ -5,8 +5,6 @@
 const Color = Object.freeze({
   Red: 'red',
   Orange: 'orange',
-  Red: 'red',
-  Orange: 'orange',
   Yellow: 'yellow',
   Green: 'green',
   Blue: 'blue',
