@@ -1,5 +1,5 @@
 import { ce } from '../../react-common.js';
-import BinPreviewComponent from '../BinPreviewComponent.js';
+import BinPreviewComponent from './BinPreviewComponent.js';
 
 /**
  * @typedef HomeComponentProps
