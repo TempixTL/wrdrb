@@ -21,7 +21,7 @@ export default class AuthenticationComponent extends React.Component {
   }
 
   componentDidMount() {
-    M.AutoInit();
+    M.Tabs.init(document.querySelectorAll('.tabs'));
   }
 
   render() {
