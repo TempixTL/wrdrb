@@ -4,7 +4,29 @@
   --brand-secondary-dark: #004e98;
 }
 
+.hero {
+  background-image: url('/versionedAssets/images/blob-header.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+@media only screen and (min-width: 600px) {
+  .hero {
+    height: 200px;
+  }
+}
+
 /* Overriding Materialize CSS' Default Theming Colors */
+
+/* Buttons */
+.btn .btn-large .btn-small {
+  background-color: var(--brand-primary) !important;
+}
+
+.btn:active .btn-large:active .btn-small:active {
+  background-color: var(--brand-primary) !important;
+}
 
 /* Text Fields */
 input:focus {
