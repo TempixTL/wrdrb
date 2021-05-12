@@ -92,8 +92,10 @@ export default class BinComponent extends React.Component {
     }
 
     render() {
-        return ce('div', null, 
-            ce('h1', null, "Your Bins"),
+        return ce('div', { className: 'section' }, 
+            ce('div', { className: 'row' },
+                ce('div', { className: 'col s12' },
+                    ce('h1', null, "Your Bins"),
                 ),
             ),
             ce('div', { className: 'row' },
