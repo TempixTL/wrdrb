@@ -3,13 +3,13 @@
  */
 export default class AuthenticatedUser {
   /**
-   * Creates an AuthenticatedUser model with a given `name` and associated
+   * Creates an AuthenticatedUser model with a given `id` and associated
    * `username`.
-   * @param {string} name The actual name of the user.
+   * @param {string} id The ID of the user in the database.
    * @param {string} username The chosen screen-name of the user.
    */
-  constructor(name, username) {
-    this.name = name;
+  constructor(id, username) {
+    this.id = id;
     this.username = username;
   }
 }

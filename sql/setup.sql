@@ -59,10 +59,12 @@ CREATE TABLE IF NOT EXISTS outfits_articles (
   article_id INT NOT NULL,
   CONSTRAINT fk_outfit_id
     FOREIGN KEY(outfit_id)
-      REFERENCES outfits(id),
+      REFERENCES outfits(id)
+        ON DELETE CASCADE,
   CONSTRAINT fk_article_id
     FOREIGN KEY(article_id)
       REFERENCES articles(id)
+        ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS bins (
@@ -79,8 +81,10 @@ CREATE TABLE IF NOT EXISTS articles_bins (
   article_id INT NOT NULL,
   CONSTRAINT fk_bin_id
     FOREIGN KEY(bin_id)
-      REFERENCES bins(id),
+      REFERENCES bins(id)
+        ON DELETE CASCADE,
   CONSTRAINT fk_article_id
     FOREIGN KEY(article_id)
       REFERENCES articles(id)
+        ON DELETE CASCADE
 );

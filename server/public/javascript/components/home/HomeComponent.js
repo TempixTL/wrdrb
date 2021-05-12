@@ -1,7 +1,8 @@
+import Bin from '../../models/Bin.js';
 import { ce } from '../../react-common.js';
 import BinPreviewComponent from './BinPreviewComponent.js';
 import '../../models/PageLikeComponentProps.js';
-import '../../models/Bin.js';
+import Page from '../../models/Page.js';
 
 /**
  * A page-like component which represents the home page of the application.
@@ -13,53 +14,69 @@ export default class HomeComponent extends React.Component {
     this.props;
 
     /**
-     * @typedef HomeComponentState
      * @type {object}
      * @property {Bin[]} bins
      */
     this.state = {
-      bins: [
-        {
-          name: 'Placeholder Bin  1',
-          articles: new Array(3).fill({ img: 'https://via.placeholder.com/150' }),
-        },
-        {
-          name: 'Placeholder Bin  2',
-          articles: new Array(3).fill({ img: 'https://via.placeholder.com/150' }),
-        },
-        {
-          name: 'Placeholder Bin  3',
-          articles: new Array(3).fill({ img: 'https://via.placeholder.com/150' }),
-        },
-      ],
+      bins: [],
     };
+  }
+
+  componentDidMount() {
+    this.loadBins();
+  }
+
+  async loadBins() {
+    const response = await fetch('/bins');
+
+    if (response.ok) {
+      const binsJson = await response.json();
+      const bins = binsJson.map((binJson) => new Bin(
+        binJson.id, binJson.name, this.props.username
+      ));
+
+      this.setState({ bins });
+    } else {
+      M.toast({html: 'Failed to load bins.'});
+      console.log('Failed to load bins.', response.status);
+    }
   }
 
   render() {
     return ce('div', null,
-      ce('div', { className: 'hero' },
-        ce('div', { className: 'align-left' },
-          ce('img', { src: 'https://via.placeholder.com/64' }),
-          ce('div', null,
-            ce('h1', null, `Good day, ${this.props.username}`),
-            ce('div', null,
-              ce('img', { src: 'https://via.placeholder.com/40' }),
-              ce('p', null, '75°F, partly cloudy'),
-            ),
-          ),
+      ce('div', { className: 'row hero' },
+        ce('div', { className: 'col s12 m6' },
+          ce('h3', { className: 'white-text' }, `Welcome, ${this.props.username}`),
         ),
-        ce('div', { className: 'align-right' },
-          ce('button', null,
-            ce('img', { src: 'https://via.placeholder.com/20' }),
-            ce('span', null, 'Log'),
+        ce('div', { className: 'col s12 m6 center-align' },
+          ce('button', {
+              onClick: () => this.props.navigate(Page.OutfitLog),
+              className: 'waves-effect waves-dark btn-large white',
+              style: { marginLeft: '10px' } },
+            ce('i', { className: 'large material-icons left black-text' }, 'edit'),
+            ce('span', { className: 'black-text'}, 'Log'),
           ),
-          ce('button', null,
-            ce('img', { src: 'https://via.placeholder.com/20' }),
+          ce('button', {
+              onClick: () => this.props.navigate(Page.Wardrobe),
+              className: 'waves-effect waves-light btn-large',
+              style: { margin: '10px 0 10px 10px'} },
+            ce('i', { className: 'large material-icons left' }, 'search'),
             ce('span', null, 'Search'),
           ),
         ),
       ),
-      this.state.bins.map((bin, index) => ce(BinPreviewComponent, { key: index, bin })),
+      (() => {
+        if (this.state.bins.length > 0)
+          return this.state.bins.map((bin, index) => ce(BinPreviewComponent, { key: index, bin }));
+        else
+          return ce('div', { className: 'section' },
+            ce('div', { className: 'row' },
+              ce('div', { className: 'col s12' },
+                ce('p', null, 'No bins to show 😔'),
+              ),
+            ),
+          );
+      })(),
     );
   }
 }

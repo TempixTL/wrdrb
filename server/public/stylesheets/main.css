@@ -1,0 +1,66 @@
+:root {
+  --brand-primary: #ff6700;
+  --brand-secondary-light: #3a6ea5;
+  --brand-secondary-dark: #004e98;
+}
+
+.hero {
+  background-image: url('/versionedAssets/images/blob-header.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+@media only screen and (min-width: 600px) {
+  .hero {
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.card-image-gradient {
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Overriding Materialize CSS' Default Theming Colors */
+
+/* Buttons */
+.btn, .btn-large, .btn-small {
+  background-color: var(--brand-primary) !important;
+}
+
+/* Text Fields */
+input:focus {
+  border-bottom: 1px solid var(--brand-primary) !important;
+  box-shadow: 0 1px 0 0 var(--brand-primary) !important;
+}
+
+label.active {
+  color: var(--brand-primary) !important;
+}
+
+/* Icons */
+i.active {
+  color: var(--brand-primary) !important;
+}
+
+/* Tabs */
+.tab > a {
+  color: var(--brand-primary) !important;
+}
+
+/* Nav */
+nav {
+  background-color: white !important;
+}
+
+nav a {
+  color: black !important;
+}

@@ -9,6 +9,7 @@ import Weather from './Weather.js';
 export default class Article {
   /**
    * Creates a single Article.
+   * @param {string} id The internal ID of the Article.
    * @param {ClothingType} clothingType The type of clothing this Article falls into.
    * @param {?Color} color The main color of the Article.
    * @param {?string} brand The brand of clothing of the Article.
@@ -16,7 +17,8 @@ export default class Article {
    * @param {?string} material The material that the Article is made out of.
    * @param {?string} image The url of the image to upload.
    */
-  constructor(clothingType, color, brand, weather, material, image) {
+  constructor(id, clothingType, color = null, brand = null, weather = null, material = null, image = null) {
+    this.id = id;
     this.clothingType = clothingType;
     this.color = color;
     this.brand = brand;
