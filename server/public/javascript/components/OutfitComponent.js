@@ -5,10 +5,11 @@ const color = ["Red","Orange","Yellow","Green","Blue","Indigo","Violet","Black",
 const weatherCondition = ["Snow","Sun", "Rain", "Wind"]
 
 export default class OutfitComponent extends React.Component {
-constructor(props) {
-  super(props);
-}
-  render(){
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
     return ce('div', null, 
       JSON.stringify(this.props.outfit.date),
       ce('br'),
@@ -24,7 +25,6 @@ constructor(props) {
       ce('br'),
       ce('img', { src: 'https://via.placeholder.com/64' }),
       ce('br'),
-
-    )
+    );
   }
 }
