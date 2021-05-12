@@ -22,21 +22,28 @@ export default class OutfitComponent extends React.Component {
   }
 
   render() {
-    return ce('div', null, 
-      JSON.stringify(this.props.outfit.date),
-      ce('br'),
-      this.props.outfit.articles.map((article, index) => {
-        return ce('ul', {key:index},
-          ce('li',null, article.brand),
-          ce('li',null, article.material),
-          ce('li',null, clothingType[article.clothing_type-1]),
-          ce('li',null, color[article.color-1]),
-          ce('li',null, weatherCondition[article.weather_condition-1]),
-        )
-      }),
-      ce('br'),
-      ce('img', { src: 'https://via.placeholder.com/64' }),
-      ce('br'),
+    return ce('div', { className: 'section' },
+      ce('div', { className: 'row' },
+        ce('div', { className: 'col s12' },
+          ce('h4', null, this.props.outfit.date.toLocaleDateString()),
+        ),
+      ),
+      ce('div', { className: 'row' },
+        this.props.outfit.articles.map((article, index) =>
+          ce('div', { key: index, className: 'col s12 m6 l4'},
+            ce('div', { className: 'card' },
+              ce('div', { className: 'card-image' },
+                ce('img', { src: article.img || versionedAsset('/images/article-placeholder.svg') }),
+                ce('div', { className: 'card-image-gradient' }),
+                ce('span', { className: 'card-title' }, article.brand),
+              ),
+              ce('div', { className: 'card-content' },
+                ce('div', { className: 'chip' }, clothingType[article.clothingType-1].toLowerCase()),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
