@@ -20,7 +20,6 @@ export default class OutfitLogComponent extends React.Component {
       method: "GET",
       headers: {'Content-Type': 'application/json', 'Csrf-Token': csrfToken},
     }).then(res => res.json()).then(data => {
-      console.log("load outfits")
       this.setState({ outfits: data })
     })
   }
@@ -40,6 +39,10 @@ export default class OutfitLogComponent extends React.Component {
     return ce('div', null, 
       ce('h2', null, 'Outfit Log:'),
       ce('br'),
+      // ce('div', null,
+      //   ce('div', null, this.state.outfits.find((article) => {return article.name === this.state.selected}).name),
+      //   ce('ul', null, this.state.outfits.find((article) => {return article.name === this.state.selected}).articles.map((article, index) => ce('li', {key: index}, article))),
+      // ),
       this.state.outfits.map((outfit, index) => 
         ce(OutfitComponent, {key:index, outfit})),
       ce('br'),

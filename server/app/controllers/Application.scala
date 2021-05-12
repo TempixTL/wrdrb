@@ -33,13 +33,20 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
     }
   }
   def outfitLog = Action.async {implicit request => 
-    println("hi!")
-    val username = "lizzie" //TODO: replace with call from session
-    val outfitData = database.getOutfits(username)
-    println("got outfits")
-    outfitData.map(outfits=> Ok(Json.toJson(outfits)))
-
+    request.session.get("username") match {
+      case Some(username) => {
+        val outfits = database.getOutfits(username)
+        outfits.map{outfits => 
+          Ok(Json.toJson(outfits))}
+      }
+      case None => 
+        println("no session in outfit log")
+        Future(BadRequest(""))
+    }
   }
+    
+    //stub controller methods and use dummy data
+
 
   def validateUser = Action.async { implicit request =>
     withJsonBody[AuthenticatingUser] {

@@ -32,7 +32,7 @@ class WrdrbDb(db: Database)(implicit ec: ExecutionContext) {
       }).result
     )
     dbData.map(_.groupBy(_._1).map{ case (outfit, tuples) =>
-      Outfit(outfit.outfitDate.toString(), tuples.map(ar => Article(ar._2.brand, ar._2.material, ar._2.clothingType, ar._2.color, ar._2.weatherCondition)))
+      Outfit(outfit.outfitDate.get.toString(), tuples.map(ar => Article(ar._2.brand, ar._2.material, ar._2.clothingType, ar._2.color, ar._2.weatherCondition)))
     }.toSeq)
   }
 
