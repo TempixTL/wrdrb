@@ -27,20 +27,52 @@ export default class MainComponent extends React.Component {
     };
   }
 
-  loginFormSubmitted(username, password) {
-    // TODO authenticate username and password
-    const id = '1';
-    username = 'wrdrb';
-    M.toast({html: `Signed in as ${username}.`});
-    this.setState({
-      user: new AuthenticatedUser(id, username),
+  async loginFormSubmitted(username, password) {
+    const response = await fetch('/user/validate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Csrf-Token': csrfToken,
+      },
+      body: JSON.stringify({ username, password }),
     });
+    
+    if (response.ok) {
+      const user = await response.json();
+      this.successfulSignIn(user);
+    } else if (response.status === 401) {
+      // 401 Unauthorized
+      M.toast({html: 'Invalid username/password combination.'});
+    } else {
+      console.log(response.status);
+    }
   }
 
-  registerFormSubmitted(username, password) {
-    // TODO register user with username and password
-    console.log('Registering user', username, password);
-    this.loginFormSubmitted(username, password);
+  async registerFormSubmitted(username, password) {
+    const response = await fetch('/user/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Csrf-Token': csrfToken,
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (response.ok) {
+      const user = await response.json();
+      this.successfulSignIn(user);
+    } else if (response.status === 409) {
+      // 409 Conflict
+      M.toast({html: `Username "${username}" is taken.`});
+    } else {
+      console.log(response.status);
+    }
+  }
+
+  /** @param {AuthenticatedUser} user */
+  successfulSignIn(user) {
+    M.toast({html: `Signed in as ${user.username}.`});
+    this.setState({ user });
   }
 
   navbarBrandClicked() {
@@ -65,11 +97,17 @@ export default class MainComponent extends React.Component {
     });
   }
 
-  navbarLogoutClicked() {
-    M.toast({html: 'Successfully signed out.'});
-    this.setState({
-      user: null,
-    });
+  async navbarLogoutClicked() {
+    const response = await fetch('/logout');
+    
+    if (response.ok) {
+      M.toast({html: 'Successfully signed out.'});
+      this.setState({
+        user: null,
+      });
+    } else {
+      M.toast({html: `Unable to sign out. ${response.statusText}.`});
+    }
   }
 
   render() {

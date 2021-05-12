@@ -12,6 +12,7 @@ import slick.jdbc.PostgresProfile.api._
 import models.WrdrbDb
 import play.api.libs.json._
 import models._
+import play.filters.csrf.CSRF
 
 @Singleton
 class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents)
@@ -44,7 +45,9 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
     withJsonBody[AuthenticatingUser] {
       case AuthenticatingUser(username, password) =>
         database.validateLogin(username, password).map {
-          case Some(user) => Ok(Json.toJson(user)).withSession("username" -> username)
+          case Some(user) => Ok(Json.toJson(user)).withSession(
+            "username" -> username,
+            "csrfToken" -> CSRF.getToken.get.value)
           case None       => Unauthorized("Authentication Failed")
         }
     }
@@ -54,10 +57,16 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
     withJsonBody[AuthenticatingUser] { 
       case AuthenticatingUser(username, password) =>
         database.validateRegister(username, password).map {
-          case Some(user) => Ok(Json.toJson(user)).withSession("username" -> username)
+          case Some(user) => Ok(Json.toJson(user)).withSession(
+            "username" -> username,
+            "csrfToken" -> CSRF.getToken.get.value)
           case None       => Conflict("Username already taken")
         }
     }
+  }
+
+  def logout = Action { implicit request =>
+    Ok("").withSession(request.session - "username")
   }
 
   def getUser(userId: String) = Action.async { implicit request =>
