@@ -93,12 +93,8 @@ export default class BinComponent extends React.Component {
     render() {
         return ce('div', null, 
             ce('h1', null, this.props.username + "'s Bins"),
-            ce('br'),
             ce('input', {type: 'text', id: 'addText', value: this.state.addText, onChange: e => this.changeHandler(e)}),
             ce('button', { onClick: e => this.addBin(this.state.addText) }, 'Add Bin'),
-            ce('br'),
-            ce('br'),
-            ce('br'),
             ce('div', null, this.state.bins.map((bin, index) =>
                 ce('h3', {key: bin.id, onClick: e => this.handleBinClick(bin)}, bin.name),
             )),
@@ -108,11 +104,8 @@ export default class BinComponent extends React.Component {
             (() => {
                 if (this.state.currBin != null && this.state.selected != null)
                     return ce('div', null,
-                        ce('br'),
                         ce('div', null, 'Viewing: '),
-                        ce('br'),
                         ce('div', null, this.state.bins.find((bin) => {return bin.name === this.state.selected}).name),
-                        ce('br'),
                         ce('div', null, 'Articles: '),
                         ce('ul', null, this.state.articles.map((article, index) => ce('li', {key: index}, article.clothing_type))),
                     );
