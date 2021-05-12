@@ -41,7 +41,7 @@ export default class OutfitComponent extends React.Component {
                   className: 'btn waves-effect waves-light red',
                   onClick: () => this.deleteBin(this.state.currBin.id) },
               ce('span', null, 'Delete Outfit'),
-              ce('i', { className: 'material-icons left' }, 'remove'),
+              ce('i', { className: 'material-icons left' }, 'delete'),
           ),
         ),
       ),
