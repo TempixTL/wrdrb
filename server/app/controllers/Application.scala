@@ -29,7 +29,7 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
 
   def index = Action.async { implicit request =>
     Future {
-      Ok(views.html.index()).withSession("username"-> "wrdrb")
+      Ok(views.html.index())
     }
   }
   def outfitLog = Action.async {implicit request => 
