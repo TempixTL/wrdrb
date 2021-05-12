@@ -37,13 +37,10 @@ export default class BinComponent extends React.Component {
 
     getBins() {
         fetch("/bins").then(res => res.json()).then(data => {
-            this.setState({ bins: data })
-        })
-    }
-
-    getBinInfo() {
-        fetch(`/bin/${this.state.currBin.id}`).then(res => res.json()).then(data => {
-            this.setState({ articles: data })
+            const bins = data.map((binJson) => new Bin(
+                binJson.id, binJson.name, binJson.username, binJson.image || null, null
+            ))
+            this.setState({ bins })
         })
     }
 
