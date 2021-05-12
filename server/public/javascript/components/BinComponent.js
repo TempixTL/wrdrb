@@ -106,28 +106,32 @@ export default class BinComponent extends React.Component {
                     value: this.state.addText,
                     onChange: (e) => this.setState({ addText: e.target.value }) }),
             ce('button', { onClick: () => this.addBin(this.state.addText) }, 'Add Bin'),
-            (() => {
-                if (this.state.bins === null)
-                    return ce('div', { className: 'progress' },
-                        ce('div', { className: 'indeterminate' }),
-                    );
-                else
-                    return ce('ul', { className: 'collection' },
-                        this.state.bins.map((bin) =>
-                            ce('a', {
-                                    key: bin.id,
-                                    href: '#',
-                                    className: 'collection-item avatar valign-wrapper ' +
-                                        // Mark bin as 'active' if it's currently selected
-                                        ((this.state.currBin !== null && bin.id === this.state.currBin.id) ? 'active' : ''),
-                                    style: { display: 'flex' },
-                                    onClick: () => this.handleBinClick(bin) },
-                                ce('img', { src: bin.image || versionedAsset('/images/article-placeholder.svg'), className: 'circle' }),
-                                ce('span', { className: 'title' }, bin.name),
-                            ),
-                        ),
-                    );
-            })(),
+            ce('div', { className: 'row' },
+                ce('div', { className: 'col s12'},
+                    (() => {
+                        if (this.state.bins === null)
+                            return ce('div', { className: 'progress' },
+                                ce('div', { className: 'indeterminate' }),
+                            );
+                        else
+                            return ce('ul', { className: 'collection' },
+                                this.state.bins.map((bin) =>
+                                    ce('a', {
+                                            key: bin.id,
+                                            href: '#',
+                                            className: 'collection-item avatar valign-wrapper ' +
+                                                // Mark bin as 'active' if it's currently selected
+                                                ((this.state.currBin !== null && bin.id === this.state.currBin.id) ? 'active' : ''),
+                                            style: { display: 'flex' },
+                                            onClick: () => this.handleBinClick(bin) },
+                                        ce('img', { src: bin.image || versionedAsset('/images/article-placeholder.svg'), className: 'circle' }),
+                                        ce('span', { className: 'title' }, bin.name),
+                                    ),
+                                ),
+                            );
+                    })(),
+                ),
+            ),
             (() => {
                 if (this.state.currBin !== null)
                     return ce(BinPreviewComponent, { key: this.state.currBin.id, bin: this.state.currBin });
