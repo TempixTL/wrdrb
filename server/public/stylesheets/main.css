@@ -64,3 +64,14 @@ nav {
 nav a {
   color: black !important;
 }
+
+/* Collections */
+
+.collection .collection-item {
+  color: var(--brand-primary) !important;
+}
+
+.collection .collection-item.active {
+  background-color: var(--brand-primary) !important;
+  color: white !important;
+}
