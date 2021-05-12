@@ -27,14 +27,24 @@ export default class MainComponent extends React.Component {
     };
   }
 
-  loginFormSubmitted(username, password) {
-    // TODO authenticate username and password
-    const id = '1';
-    username = 'wrdrb';
-    M.toast({html: `Signed in as ${username}.`});
-    this.setState({
-      user: new AuthenticatedUser(id, username),
+  async loginFormSubmitted(username, password) {
+    const response = await fetch('/user/validate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Csrf-Token': csrfToken,
+      },
+      body: JSON.stringify({ username, password }),
     });
+    
+    if (response.ok) {
+      /** @type {AuthenticatedUser} */
+      const user = await response.json();
+      M.toast({html: `Signed in as ${user.username}.`});
+      this.setState({ user });
+    } else {
+      console.log(response.status);
+    }
   }
 
   registerFormSubmitted(username, password) {
