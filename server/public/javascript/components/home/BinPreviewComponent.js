@@ -35,18 +35,30 @@ export default class BinPreviewComponent extends React.Component {
   }
 
   async loadArticles() {
-    // TODO fetch articles in bin from server
-    // const response = await fetch(`bins/${this.props.bin.id}/articles`);
+    // the path for this should be `bins/{binId}/articles`, but this will have
+    // do one day before the deadline
+    const response = await fetch(`bin/${this.props.bin.id}`);
+    
+    if (response.ok) {
+      const articlesJson = await response.json();
+      const articles = articlesJson.map((articleJson) => new Article(
+        articleJson.id,
+        // `clothingType` is correct according to API spec, but we currently get `clothing_type`
+        articleJson.clothingType || articleJson.clothing_type,
+        articleJson.color || null,
+        articleJson.brand || null,
+        // `weather` is correct according to API spec, but we currently get `weather_condition`
+        articleJson.weather || articleJson.weather_condition || null,
+        articleJson.material || null,
+        articleJson.image || null,
+      ));
 
-    // mock network delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    this.setState({
-      articles: [ 
-        new Article(0, ClothingType.Shirt, Color.Red, 'Testing Brand'),
-        new Article(1, ClothingType.Shorts, Color.Blue, 'Testing Brand'),
-        new Article(2, ClothingType.Shoes, Color.White, 'Testing Brand'),
-      ]
-    });
+      this.setState({ articles });
+    } else if (response.status === 404) {
+      M.toast({html: `Bin "${this.props.bin.name}" not found.`});
+    } else {
+      console.log(`Bin "${this.props.bin.name}" not found.`, response.status);
+    }
   }
 
   /**
