@@ -75,7 +75,12 @@ export default class BinComponent extends React.Component {
         });
         if (response.ok) {
             M.toast({html: `Bin deleted`});
-            this.setState({ selected: null })
+            this.setState({ currBin: null })
+
+            // Deleting Bins from server right after adding one causes a race
+            // condition where the server responds before the bin has been
+            // deleted. Adding a little delay to alleviate this.
+            await new Promise((resolve) => setTimeout(resolve, 250 /** ms */));
             this.getBins();
         } else {
           console.log(response.status);
@@ -134,7 +139,19 @@ export default class BinComponent extends React.Component {
             ),
             (() => {
                 if (this.state.currBin !== null)
-                    return ce(BinPreviewComponent, { key: this.state.currBin.id, bin: this.state.currBin });
+                    return ce('div', null,
+                        ce(BinPreviewComponent, { key: this.state.currBin.id, bin: this.state.currBin }),
+                        ce('div', { className: 'row' },
+                            ce('div', { className: 'col s12' },
+                                ce('button', {
+                                        className: 'btn waves-effect waves-light red',
+                                        onClick: () => this.deleteBin(this.state.currBin.id) },
+                                    ce('span', null, 'Delete Bin'),
+                                    ce('i', { className: 'material-icons left' }, 'remove'),
+                                ),
+                            ),
+                        ),
+                    );
             })(),
         );
     }
