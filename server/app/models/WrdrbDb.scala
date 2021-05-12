@@ -87,6 +87,21 @@ class WrdrbDb(db: Database)(implicit ec: ExecutionContext) {
     }
   }
 
+  /**
+    * Asynchronously gets a `User` with a given `username`.
+    *
+    * @param userId The ID of the `User` to retrieve.
+    * @return `Some(User)` if the `User` with ID `userId` exists, otherwise
+    * `None`.
+    */
+  def getUserByUsername(username: String): Future[Option[User]] = {
+    val matches = db.run(Users.filter(_.username === username).result)
+    matches.map {
+      case Seq(UsersRow(id, username, _)) => Some(User(id, username))
+      case _ => None
+    }
+  }
+
   //                  ------ Bin Methods ------
   //
   /**
@@ -131,21 +146,15 @@ class WrdrbDb(db: Database)(implicit ec: ExecutionContext) {
     * @return `true` on success, `false` on already exists.
     */
   def addBin(username: String, name: String): Future[Boolean] = {
-    db.run(
-      (for {
-        user <- Users if user.username === username
-      } yield {
-        user.id
-      }).result
-    ).map(ids => ids.map(id => {
+    getUserByUsername(username).flatMap(user => {
       val matches = db.run(Bins.filter(row => row.name === name).result)
-      matches.flatMap(_ match {
-        case Nil => 
-          db.run(Bins += BinsRow(-1, id, name))
-          Future.successful(true)
-        case _ => Future.successful(false)
-        })
-    }))
+      matches.map(_ match {
+        case Nil =>
+          db.run(Bins += BinsRow(-1, user.get.id, name))
+          true
+        case _ => false
+      })
+    })
   }
 
   /**

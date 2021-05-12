@@ -6,6 +6,6 @@ case class User(id: Int, username: String)
 
 object User {
   object Implicits {
-    implicit val writes = Json.writes[User]
+    implicit val userWrites = Json.writes[User]
   }
 }
