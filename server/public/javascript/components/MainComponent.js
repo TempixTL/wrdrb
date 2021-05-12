@@ -28,13 +28,19 @@ export default class MainComponent extends React.Component {
   }
 
   loginFormSubmitted(username, password) {
+    // TODO authenticate username and password
+    const id = '1';
+    username = 'wrdrb';
+    M.toast({html: `Signed in as ${username}.`});
     this.setState({
-      user: new AuthenticatedUser('Testing User', 'testing_user'),
+      user: new AuthenticatedUser(id, username),
     });
   }
 
   registerFormSubmitted(username, password) {
+    // TODO register user with username and password
     console.log('Registering user', username, password);
+    this.loginFormSubmitted(username, password);
   }
 
   navbarBrandClicked() {
@@ -60,27 +66,36 @@ export default class MainComponent extends React.Component {
   }
 
   navbarLogoutClicked() {
+    M.toast({html: 'Successfully signed out.'});
     this.setState({
       user: null,
     });
   }
 
   render() {
-    if (this.state.user === null)
-      return ce(AuthenticationComponent, {
-        onLoginFormSubmit: (_, username, password) => this.loginFormSubmitted(username, password),
-        onRegisterFormSubmit: (_, username, password) => this.registerFormSubmitted(username, password),
-      });
-    else
-      return ce('div', null,
-        ce(NavBarComponent, {
-          onBrandClicked: () => this.navbarBrandClicked(),
-          onOutfitLogClicked: () => this.navbarOutfitLogClicked(),
-          onMyWardrobeClicked: () => this.navbarMyWardrobeClicked(),
-          onMyBinsClicked: () => this.navbarMyBinsClicked(),
-          onLogoutClicked: () => this.navbarLogoutClicked(),
-        }),
-        ce(this.state.currentPage, { username: this.state.user.username }),
-      );
+    return ce('div', null,
+      (() => {
+        if (this.state.user === null)
+          return ce('div', { className: 'container' },
+            ce(AuthenticationComponent, {
+              onLoginFormSubmit: (_, username, password) => this.loginFormSubmitted(username, password),
+              onRegisterFormSubmit: (_, username, password) => this.registerFormSubmitted(username, password),
+            }),
+          );
+        else 
+          return ce('div', null,
+            ce(NavBarComponent, {
+              onBrandClicked: () => this.navbarBrandClicked(),
+              onOutfitLogClicked: () => this.navbarOutfitLogClicked(),
+              onMyWardrobeClicked: () => this.navbarMyWardrobeClicked(),
+              onMyBinsClicked: () => this.navbarMyBinsClicked(),
+              onLogoutClicked: () => this.navbarLogoutClicked(),
+            }),
+            ce('div', { className: 'container section' },
+              ce(this.state.currentPage, { username: this.state.user.username }),
+            ),
+          );
+      })(),
+    );
   }
 }

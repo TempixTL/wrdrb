@@ -4,7 +4,6 @@ import '../../models/UserFormComponentSubmitCallback.js';
 /**
  * @typedef UserFormComponentProps
  * @type {object}
- * @property {string} title The title to render for the form.
  * @property {string} submitLabel The label text of the submit button.
  * @property {UserFormComponentSubmitCallback} onSubmit The callback when the
  * form is submitted.
@@ -38,37 +37,34 @@ export default class UserFormComponent extends React.Component {
   }
 
   render() {
+    const usernameId = this.props.title + '[username]';
+    const passwordId = this.props.title + '[password]';
     return ce('div', null,
-      ce('h1', null, this.props.title),
       ce('form', { onSubmit: (e) => this.onSubmit(e) },
-        ce('label', { htmlFor: 'username' }, 'Username'),
-        ce('div', null,
+        ce('div', { className: 'input-field' },
+          ce('i', { className: 'material-icons prefix' }, 'account_circle'),
           ce('input', {
-            name: 'username',
+            id: usernameId,
             value: this.state.username,
             onChange: (e) => this.setState({ username: e.target.value }),
             type: 'text',
-            placeholder: 'Username',
           }),
-          ce('span', null,
-            ce('i', null),
-          ),
+          ce('label', { htmlFor: usernameId }, 'Username'),
         ),
-        ce('label', { htmlFor: 'password' }, 'Password'),
-        ce('div', null,
+        ce('div', { className: 'input-field' },
+          ce('i', { className: 'material-icons prefix' }, 'password'),
           ce('input', {
-            name: 'password',
+            id: passwordId,
             value: this.state.password,
             onChange: (e) => this.setState({ password: e.target.value }),
             type: 'password',
-            placeholder: 'Password',
-            className: 'input'
           }),
-          ce('span', null,
-            ce('i', null),
-          ),
+          ce('label', { htmlFor: passwordId }, 'Password'),
         ),
-        ce('input', { type: 'submit', value: this.props.submitLabel }),
+        ce('button', { type: 'submit', className: 'btn waves-effect waves-light z-depth-0' },
+          ce('i', { className: 'material-icons right' }, 'login'),
+          this.props.submitLabel,
+        ),
       ),
     );
   }
