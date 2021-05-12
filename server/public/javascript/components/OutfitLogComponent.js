@@ -7,7 +7,7 @@ export default class OutfitLogComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "Lizzie",
+      username: "lizzie",
       outfitDate: "04/29/2021", 
       outfits: [],
       createDate: "",
@@ -37,7 +37,6 @@ export default class OutfitLogComponent extends React.Component {
   }
 
   render(){
-    console.log("here")
     return ce('div', null, 
       ce('h2', null, 'Outfit Log:'),
       ce('br'),
