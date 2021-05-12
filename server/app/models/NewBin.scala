@@ -6,6 +6,6 @@ case class NewBin(name: String)
 
 object NewBin {
   object Implicits {
-    implicit val reads = Json.reads[NewBin]
+    implicit val newBinReads = Json.reads[NewBin]
   }
 }
