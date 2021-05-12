@@ -13,7 +13,7 @@ export default class Bin {
    * @param {?Article[]} articles The articles within the Bin. Can be `null`
    * to defer loading.
    */
-  constructor(id, name, username, articles) {
+  constructor(id, name, username, articles = null) {
     this.id = id;
     this.name = name;
     this.username = username;

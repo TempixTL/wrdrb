@@ -17,7 +17,7 @@ export default class Article {
    * @param {?string} material The material that the Article is made out of.
    * @param {?string} image The url of the image to upload.
    */
-  constructor(id, clothingType, color, brand, weather, material, image) {
+  constructor(id, clothingType, color = null, brand = null, weather = null, material = null, image = null) {
     this.id = id;
     this.clothingType = clothingType;
     this.color = color;
