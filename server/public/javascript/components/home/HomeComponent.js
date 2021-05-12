@@ -15,15 +15,16 @@ export default class HomeComponent extends React.Component {
 
     /**
      * @type {object}
-     * @property {Bin[]} bins
+     * @property {?Bin[]} bins
      */
     this.state = {
-      bins: [],
+      bins: null,
     };
   }
 
   componentDidMount() {
-    this.loadBins();
+    if (this.state.bins === null)
+      this.loadBins();
   }
 
   async loadBins() {
@@ -66,7 +67,11 @@ export default class HomeComponent extends React.Component {
         ),
       ),
       (() => {
-        if (this.state.bins.length > 0)
+        if (this.state.bins === null)
+          return ce('div', { className: 'progress' },
+            ce('div', { className: 'indeterminate' }),
+          );
+        else if (this.state.bins.length > 0)
           return this.state.bins.map((bin, index) => ce(BinPreviewComponent, { key: index, bin }));
         else
           return ce('div', { className: 'section' },
