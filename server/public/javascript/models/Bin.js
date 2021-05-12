@@ -10,13 +10,15 @@ export default class Bin {
    * @param {string} id The internal ID of the Bin.
    * @param {string} name The name of the Bin.
    * @param {string} username The username of the Bin's owner
+   * @param {?string} image The url of the Bin's image
    * @param {?Article[]} articles The articles within the Bin. Can be `null`
    * to defer loading.
    */
-  constructor(id, name, username, articles = null) {
+  constructor(id, name, username, image = null, articles = null) {
     this.id = id;
     this.name = name;
     this.username = username;
+    this.image = image;
     this.articles = articles;
   }
 }

@@ -1,13 +1,7 @@
 import { ce, csrfToken, versionedAsset } from '../react-common.js';
+import BinPreviewComponent from './home/BinPreviewComponent.js';
 import '../models/PageLikeComponentProps.js';
 import Bin from '../models/Bin.js';
-
-// export const getAllBinsRoute = document.getElementById("getAllBinsRoute").value;
-// export const getBinRoute = document.getElementById("getBinRoute").value;
-// export const addBinRoute = document.getElementById("addBinRoute").value;
-// export const deleteBinRoute = document.getElementById("deleteBinRoute").value;
-// export const addArticleToBinRoute = document.getElementById("addArticleToBinRoute").value;
-// export const removeArticleFromBinRoute = document.getElementById("removeArticleFromBinRoute").value;
 
 /**
  * A page-like component that displays all the user's bins.
@@ -21,33 +15,32 @@ export default class BinComponent extends React.Component {
         /**
          * @typedef BinComponentState
          * @type {object}
-         * @property {Bin[]} bins
-         * @property {string} searchText The current Bin search text.
-         * @property {?string} selected The currently selected Bin.
+         * @property {?Bin[]} bins All the users bins. `null` means the bins are
+         * not yet loaded
+         * @property {string} addText The potential new Bin's name
+         * @property {?Bin} currBin The currently selected Bin, or `null` if 
+         * no Bin is selected
          */
         this.state = {
-            bins: [],
-            articles: [],
-            searchText: "",
+            bins: null,
             addText: "",
-            selected: null,
             currBin: null,
         };
     }
 
     componentDidMount() {
-        this.getBins()
+        M.Modal.init(document.querySelectorAll('.modal'));
+
+        if (this.state.bins === null)
+            this.getBins()
     }
 
     getBins() {
         fetch("/bins").then(res => res.json()).then(data => {
-            this.setState({ bins: data })
-        })
-    }
-
-    getBinInfo() {
-        fetch(`/bin/${this.state.currBin.id}`).then(res => res.json()).then(data => {
-            this.setState({ articles: data })
+            const bins = data.map((binJson) => new Bin(
+                binJson.id, binJson.name, binJson.username, binJson.image || null, null
+            ))
+            this.setState({ bins })
         })
     }
 
@@ -63,6 +56,11 @@ export default class BinComponent extends React.Component {
         if (response.ok) {
             M.toast({html: `Bin added`});
             this.setState({ addText: "" })
+
+            // Getting Bins from server right after adding one causes a race
+            // condition where the server responds before the bin has been
+            // added. Adding a little delay to alleviate this.
+            await new Promise((resolve) => setTimeout(resolve, 250 /** ms */));
             this.getBins();
         } else {
           console.log(response.status);
@@ -79,63 +77,102 @@ export default class BinComponent extends React.Component {
         });
         if (response.ok) {
             M.toast({html: `Bin deleted`});
-            this.setState({ selected: null })
+            this.setState({ currBin: null })
+
+            // Deleting Bins from server right after adding one causes a race
+            // condition where the server responds before the bin has been
+            // deleted. Adding a little delay to alleviate this.
+            await new Promise((resolve) => setTimeout(resolve, 250 /** ms */));
             this.getBins();
         } else {
           console.log(response.status);
         }
     }
 
-
-    // loadBins(username){
-    //     this.setState({
-    //         bins: [
-    //             { name: "Your Favorites", articles: ["Default Shirt"] },
-    //             { name: "Work", articles: ["White Shirt", " Black Pants", "Black Shoes"] }, 
-    //             { name: "Weekend", articles: ["Blue Hat", "White Shirt", "Black Tie", "Blue Pants"] },
-    //             { name: "Home", articles: ["Gray Shirt", "Black Pants"] }
-    //         ]
-    //     });
-    // }
-    
-    changeHandler(e) {
-        this.setState({[e.target['id']]: e.target.value});
-    }
-
     handleBinClick(bin) {
-        this.setState({ selected: bin.name });
-        this.setState({ currBin: bin }, function () {
-            this.getBinInfo()
-        });
+        this.setState({ currBin: bin });
     }
 
     render() {
-        return ce('div', null, 
-            ce('h1', null, this.props.username + "'s Bins"),
-            ce('br'),
-            ce('input', {type: 'text', id: 'addText', value: this.state.addText, onChange: e => this.changeHandler(e)}),
-            ce('button', { onClick: e => this.addBin(this.state.addText) }, 'Add Bin'),
-            // ce('input', {type: 'text', id: 'searchText', value: this.state.searchText, onChange: e => this.changeHandler(e)}),
-            // ce('button', {onClick: e => console.log(this.state.searchText)}, 'Search'),
-            ce('br'),
-            ce('br'),
-            ce('br'),
-            ce('div', null, this.state.bins.map((bin, index) =>
-                ce('h3', {key: bin.id, onClick: e => this.handleBinClick(bin)}, bin.name),
-            )),
-            ce('div', null, this.state.bins.map((bin, index) =>
-                ce('button', {key: bin.name, onClick: e => this.deleteBin(bin.id) }, `Delete ${bin.name}`),
-            )),
+        return ce('div', { className: 'section' }, 
+            ce('div', { className: 'row' },
+                ce('div', { className: 'col s12' },
+                    ce('h1', null, "Your Bins"),
+                ),
+            ),
+            ce('div', { className: 'row' },
+                ce('div', { className: 'col s12'},
+                    ce('button', {
+                            'data-target': 'add-bin-modal',
+                            className: 'btn waves-effect waves-light modal-trigger'},
+                        ce('span', null, 'Create Bin'),
+                        ce('i', { className: 'material-icons left' }, 'add'),
+                    )
+                ),
+            ),
+            ce('div', { id: 'add-bin-modal', className: 'modal' },
+                ce('div', { className: 'modal-content' },
+                    ce('h4', null, 'Create a New Bin'),
+                    ce('div', { className: 'secion' },
+                        ce('div', { className: 'input-field' },
+                            ce('input', {
+                                    name: 'bin-name',
+                                    type: 'text',
+                                    value: this.state.addText,
+                                    onChange: (e) => this.setState({ addText: e.target.value }) }),
+                            ce('label', { htmlFor: 'bin-name' }, 'Bin Name'),
+                        ),
+                    ),
+                ),
+                ce('div', { className: 'modal-footer' },
+                    ce('div', {
+                            onClick: () => this.addBin(this.state.addText),
+                            className: 'modal-close btn waves-effect waves-dark z-depth-0' }, 'Create Bin'),
+                    ce('div', { 
+                            onClick: () => this.setState({ addText: '' }),
+                            className: 'modal-close btn-flat waves-effect waves-dark' }, 'Cancel'),
+                ),
+            ),
+            ce('div', { className: 'row' },
+                ce('div', { className: 'col s12'},
+                    (() => {
+                        if (this.state.bins === null)
+                            return ce('div', { className: 'progress' },
+                                ce('div', { className: 'indeterminate' }),
+                            );
+                        else
+                            return ce('ul', { className: 'collection' },
+                                this.state.bins.map((bin) =>
+                                    ce('a', {
+                                            key: bin.id,
+                                            href: '#',
+                                            className: 'collection-item avatar valign-wrapper ' +
+                                                // Mark bin as 'active' if it's currently selected
+                                                ((this.state.currBin !== null && bin.id === this.state.currBin.id) ? 'active' : ''),
+                                            style: { display: 'flex' },
+                                            onClick: () => this.handleBinClick(bin) },
+                                        ce('img', { src: bin.image || versionedAsset('/images/article-placeholder.svg'), className: 'circle' }),
+                                        ce('span', { className: 'title' }, bin.name),
+                                    ),
+                                ),
+                            );
+                    })(),
+                ),
+            ),
             (() => {
-                if (this.state.currBin != null && this.state.selected != null)
+                if (this.state.currBin !== null)
                     return ce('div', null,
-                        ce('br'),
-                        ce('div', null, 'Viewing: '),
-                        ce('br'),
-                        ce('div', null, this.state.bins.find((bin) => {return bin.name === this.state.selected}).name),
-                        ce('br'),
-                        ce('div', null, 'Articles: '),
-                        ce('ul', null, this.state.articles.map((article, index) => ce('li', {key: index}, article.clothing_type))),
+                        ce(BinPreviewComponent, { key: this.state.currBin.id, bin: this.state.currBin }),
+                        ce('div', { className: 'row' },
+                            ce('div', { className: 'col s12' },
+                                ce('button', {
+                                        className: 'btn waves-effect waves-light red',
+                                        onClick: () => this.deleteBin(this.state.currBin.id) },
+                                    ce('span', null, 'Delete Bin'),
+                                    ce('i', { className: 'material-icons left' }, 'remove'),
+                                ),
+                            ),
+                        ),
                     );
             })(),
         );
