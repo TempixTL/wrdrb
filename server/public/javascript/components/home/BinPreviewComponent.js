@@ -107,6 +107,10 @@ export default class BinPreviewComponent extends React.Component {
                 ce('div', { className: 'indeterminate' }),
               ),
             );
+          else if (this.state.articles.length === 0)
+            return ce('div', { className: 'col s12'},
+              ce('p', null, ce('em', null, 'There are no articles in this bin.')),
+            );
           else
             return this.state.articles.map((article, index) =>
               ce('div', { key: index, className: 'col s12 m6 l4'},
