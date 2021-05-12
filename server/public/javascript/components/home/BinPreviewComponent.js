@@ -1,5 +1,8 @@
-import { ce } from '../../react-common.js';
+import { ce, versionedAsset } from '../../react-common.js';
 import Bin from '../../models/Bin.js';
+import Article from '../../models/Article.js';
+import ClothingType from '../../models/ClothingType.js';
+import Color from '../../models/Color.js';
 
 /**
  * @typedef BinPreviewComponentProps
@@ -16,6 +19,34 @@ export default class BinPreviewComponent extends React.Component {
     super(props);
     /** @type {BinPreviewComponentProps} */
     this.props;
+    
+    /**
+     * @type {object}
+     * @property {?Article[]} articles
+     */
+    this.state = {
+      articles: this.props.bin.articles,
+    };
+  }
+
+  componentDidMount() {
+    if (this.state.articles === null)
+      this.loadArticles();
+  }
+
+  async loadArticles() {
+    // TODO fetch articles in bin from server
+    // const response = await fetch(`bins/${this.props.bin.id}/articles`);
+
+    // mock network delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    this.setState({
+      articles: [ 
+        new Article(0, ClothingType.Shirt, Color.Red, 'Testing Brand', null, null, null),
+        new Article(1, ClothingType.Shorts, Color.Blue, 'Testing Brand', null, null, null),
+        new Article(2, ClothingType.Shoes, Color.White, 'Testing Brand', null, null, null),
+      ]
+    });
   }
 
   render() {
@@ -27,18 +58,18 @@ export default class BinPreviewComponent extends React.Component {
       ),
       ce('div', { className: 'row' },
         (() => {
-          if (this.props.bin.articles === null)
+          if (this.state.articles === null)
             return ce('div', { className: 'col s12' },
               ce('div', { className: 'progress' },
                 ce('div', { className: 'indeterminate' }),
               ),
             );
           else
-            return this.props.bin.articles.map((article, index) =>
+            return this.state.articles.map((article, index) =>
               ce('div', { key: index, className: 'col s12 m6 l4'},
                 ce('div', { className: 'card' },
                   ce('div', { className: 'card-image' },
-                    ce('img', { src: article.img, width: '150px' }),
+                    ce('img', { src: article.img || versionedAsset('/images/article-placeholder.svg') }),
                   ),
                 ),
               )
