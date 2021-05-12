@@ -1,3 +1,4 @@
+import Bin from '../../models/Bin.js';
 import { ce } from '../../react-common.js';
 import BinPreviewComponent from './BinPreviewComponent.js';
 
@@ -20,21 +21,25 @@ export default class HomeComponent extends React.Component {
      * @property {Bin[]} bins
      */
     this.state = {
-      bins: [
-        {
-          name: 'Placeholder Bin  1',
-          articles: new Array(3).fill({ dateAdded: new Date(), img: 'https://via.placeholder.com/150' }),
-        },
-        {
-          name: 'Placeholder Bin  2',
-          articles: new Array(3).fill({ dateAdded: new Date(), img: 'https://via.placeholder.com/150' }),
-        },
-        {
-          name: 'Placeholder Bin  3',
-          articles: new Array(3).fill({ dateAdded: new Date(), img: 'https://via.placeholder.com/150' }),
-        },
-      ],
+      bins: [],
     };
+  }
+
+  componentDidMount() {
+    this.loadBins();
+  }
+
+  async loadBins() {
+    const response = await fetch('/bins');
+
+    if (response.ok) {
+      const binsJson = await response.json();
+      const bins = binsJson.map((binJson) => new Bin(
+        binJson.id, binJson.name, this.props.username, null
+      ));
+
+      this.setState({ bins });
+    }
   }
 
   render() {
