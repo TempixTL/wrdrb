@@ -1,20 +1,17 @@
 import Bin from '../../models/Bin.js';
 import { ce } from '../../react-common.js';
 import BinPreviewComponent from './BinPreviewComponent.js';
-
-/**
- * @typedef HomeComponentProps
- * @type {object}
- * @property {string} username The username of the logged-in user
- */
+import '../../models/PageLikeComponentProps.js';
+import Page from '../../models/Page.js';
 
 /**
  * A page-like component which represents the home page of the application.
- * @property {HomeComponentProps} props
  */
 export default class HomeComponent extends React.Component {
   constructor(props) {
     super(props);
+    /** @type {PageLikeComponentProps} */
+    this.props;
 
     /**
      * @type {object}
@@ -52,11 +49,17 @@ export default class HomeComponent extends React.Component {
           ce('h3', { className: 'white-text' }, `Welcome, ${this.props.username}`),
         ),
         ce('div', { className: 'col s12 m6 center-align' },
-          ce('button', { className: 'waves-effect waves-dark btn-large white', style: { marginLeft: '10px' } },
+          ce('button', {
+              onClick: () => this.props.navigate(Page.OutfitLog),
+              className: 'waves-effect waves-dark btn-large white',
+              style: { marginLeft: '10px' } },
             ce('i', { className: 'large material-icons left black-text' }, 'edit'),
             ce('span', { className: 'black-text'}, 'Log'),
           ),
-          ce('button', { className: 'waves-effect waves-light btn-large', style: { margin: '10px 0 10px 10px'} },
+          ce('button', {
+              onClick: () => this.props.navigate(Page.Wardrobe),
+              className: 'waves-effect waves-light btn-large',
+              style: { margin: '10px 0 10px 10px'} },
             ce('i', { className: 'large material-icons left' }, 'search'),
             ce('span', null, 'Search'),
           ),

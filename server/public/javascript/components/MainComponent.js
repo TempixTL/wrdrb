@@ -5,6 +5,8 @@ import HomeComponent from './home/HomeComponent.js';
 import OutfitLogComponent from './OutfitLogComponent.js';
 import BinComponent from './BinComponent.js';
 import AuthenticatedUser from '../models/AuthenticatedUser.js';
+import '../models/NavigateCallback.js';
+import Page from '../models/Page.js';
 
 /**
  * The Main entry point of the React application.
@@ -97,6 +99,31 @@ export default class MainComponent extends React.Component {
     });
   }
 
+  /**
+   * Used by page-like components to navigate to other pages within the
+   * Application.
+   * @param {Page} page The page to navigate to
+   */
+  navigate(page) {
+    let currentPage;
+    switch(page) {
+      case Page.Bins:
+        currentPage = BinComponent;
+        break;
+      case Page.OutfitLog:
+        currentPage = OutfitLogComponent;
+        break;
+      case Page.Wardrobe:
+        // TODO
+        return;
+      case Page.Home:
+      default:
+        currentPage = HomeComponent;
+    }
+
+    this.setState({ currentPage });
+  }
+
   async navbarLogoutClicked() {
     const response = await fetch('/logout');
     
@@ -130,7 +157,9 @@ export default class MainComponent extends React.Component {
               onLogoutClicked: () => this.navbarLogoutClicked(),
             }),
             ce('div', { className: 'container section' },
-              ce(this.state.currentPage, { username: this.state.user.username }),
+              ce(this.state.currentPage, { 
+                  username: this.state.user.username,
+                  navigate: (p) => this.navigate(p) }),
             ),
           );
       })(),
