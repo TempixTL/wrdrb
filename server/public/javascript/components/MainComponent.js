@@ -38,10 +38,11 @@ export default class MainComponent extends React.Component {
     });
     
     if (response.ok) {
-      /** @type {AuthenticatedUser} */
       const user = await response.json();
-      M.toast({html: `Signed in as ${user.username}.`});
-      this.setState({ user });
+      this.successfulSignIn(user);
+    } else if (response.status === 401) {
+      // 401 Unauthorized
+      M.toast({html: 'Invalid username/password combination.'});
     } else {
       console.log(response.status);
     }
@@ -51,6 +52,12 @@ export default class MainComponent extends React.Component {
     // TODO register user with username and password
     console.log('Registering user', username, password);
     this.loginFormSubmitted(username, password);
+  }
+
+  /** @param {AuthenticatedUser} user */
+  successfulSignIn(user) {
+    M.toast({html: `Signed in as ${user.username}.`});
+    this.setState({ user });
   }
 
   navbarBrandClicked() {
