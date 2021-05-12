@@ -29,6 +29,23 @@ export default class OutfitComponent extends React.Component {
         ),
       ),
       ce('div', { className: 'row' },
+        ce('div', { classname: 'col s12' },
+          ce('button', {
+                  className: 'btn waves-effect waves-dark white',
+                  onClick: () => this.deleteBin(this.state.currBin.id) },
+              ce('span', { className: 'black-text' }, 'Add Article'),
+              ce('i', { className: 'material-icons left black-text' }, 'add'),
+          ),
+          ce('span', null, ' '),
+          ce('button', {
+                  className: 'btn waves-effect waves-light red',
+                  onClick: () => this.deleteBin(this.state.currBin.id) },
+              ce('span', null, 'Delete Outfit'),
+              ce('i', { className: 'material-icons left' }, 'remove'),
+          ),
+        ),
+      ),
+      ce('div', { className: 'row' },
         this.props.outfit.articles.map((article, index) =>
           ce('div', { key: index, className: 'col s12 m6 l4'},
             ce('div', { className: 'card' },
