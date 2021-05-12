@@ -29,6 +29,8 @@ export default class BinComponent extends React.Component {
     }
 
     componentDidMount() {
+        M.Modal.init(document.querySelectorAll('.modal'));
+
         if (this.state.bins === null)
             this.getBins()
     }
@@ -100,17 +102,37 @@ export default class BinComponent extends React.Component {
             ),
             ce('div', { className: 'row' },
                 ce('div', { className: 'col s12'},
-                    ce('button', { className: 'btn waves-effect waves-light'},
+                    ce('button', {
+                            'data-target': 'add-bin-modal',
+                            className: 'btn waves-effect waves-light modal-trigger'},
                         ce('span', null, 'Create Bin'),
                         ce('i', { className: 'material-icons left' }, 'add'),
                     )
                 ),
             ),
-            ce('input', {
-                    type: 'text',
-                    value: this.state.addText,
-                    onChange: (e) => this.setState({ addText: e.target.value }) }),
-            ce('button', { onClick: () => this.addBin(this.state.addText) }, 'Add Bin'),
+            ce('div', { id: 'add-bin-modal', className: 'modal' },
+                ce('div', { className: 'modal-content' },
+                    ce('h4', null, 'Create a New Bin'),
+                    ce('div', { className: 'secion' },
+                        ce('div', { className: 'input-field' },
+                            ce('input', {
+                                    name: 'bin-name',
+                                    type: 'text',
+                                    value: this.state.addText,
+                                    onChange: (e) => this.setState({ addText: e.target.value }) }),
+                            ce('label', { htmlFor: 'bin-name' }, 'Bin Name'),
+                        ),
+                    ),
+                ),
+                ce('div', { className: 'modal-footer' },
+                    ce('div', {
+                            onClick: () => this.addBin(this.state.addText),
+                            className: 'modal-close btn waves-effect waves-dark z-depth-0' }, 'Create Bin'),
+                    ce('div', { 
+                            onClick: () => this.setState({ addText: '' }),
+                            className: 'modal-close btn-flat waves-effect waves-dark' }, 'Cancel'),
+                ),
+            ),
             ce('div', { className: 'row' },
                 ce('div', { className: 'col s12'},
                     (() => {
