@@ -34,6 +34,26 @@ export default class BinPreviewComponent extends React.Component {
       this.loadArticles();
   }
 
+  /**
+   * Returns the name of a `clothingType` based on it's ID.
+   * 
+   * @param {number} clothingTypeId Integer representing the ID of the clothingType
+   * @returns A string describing the clothing type.
+   */
+  clothingTypeFromId(clothingTypeId) {
+    const clothingTypesInOrder = [ 
+      ClothingType.Shirt,
+      ClothingType.Pants,
+      ClothingType.Shoes,
+      ClothingType.Hat,
+      ClothingType.Dress,
+      ClothingType.Skirt,
+      ClothingType.Shorts,
+    ];
+
+    return clothingTypesInOrder[clothingTypeId-1];
+  }
+
   async loadArticles() {
     // the path for this should be `bins/{binId}/articles`, but this will have
     // do one day before the deadline
@@ -44,7 +64,7 @@ export default class BinPreviewComponent extends React.Component {
       const articles = articlesJson.map((articleJson) => new Article(
         articleJson.id,
         // `clothingType` is correct according to API spec, but we currently get `clothing_type`
-        articleJson.clothingType || articleJson.clothing_type,
+        this.clothingTypeFromId(articleJson.clothingType || articleJson.clothing_type),
         articleJson.color || null,
         articleJson.brand || null,
         // `weather` is correct according to API spec, but we currently get `weather_condition`
