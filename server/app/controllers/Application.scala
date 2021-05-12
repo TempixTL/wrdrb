@@ -60,6 +60,10 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
     }
   }
 
+  def logout = Action {
+    Ok("").withNewSession
+  }
+
   def getUser(userId: String) = Action.async { implicit request =>
     database.getUser(userId).map {
       case Some(user) => Ok(Json.toJson(user))

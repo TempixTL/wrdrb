@@ -75,11 +75,17 @@ export default class MainComponent extends React.Component {
     });
   }
 
-  navbarLogoutClicked() {
-    M.toast({html: 'Successfully signed out.'});
-    this.setState({
-      user: null,
-    });
+  async navbarLogoutClicked() {
+    const response = await fetch('/logout');
+    
+    if (response.ok) {
+      M.toast({html: 'Successfully signed out.'});
+      this.setState({
+        user: null,
+      });
+    } else {
+      M.toast({html: `Unable to sign out. ${response.statusText}.`});
+    }
   }
 
   render() {

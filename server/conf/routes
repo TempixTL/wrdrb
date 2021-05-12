@@ -9,6 +9,7 @@ GET        /log                          controllers.Application.outfitLog
 # User Routes
 POST       /user/validate               controllers.Application.validateUser
 POST       /user/register               controllers.Application.registerUser
+GET        /logout                      controllers.Application.logout
 GET        /user/:userId                controllers.Application.getUser(userId)
 
 # Bin Routes
