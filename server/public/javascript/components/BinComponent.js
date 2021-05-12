@@ -2,13 +2,6 @@ import { ce, csrfToken, versionedAsset } from '../react-common.js';
 import '../models/PageLikeComponentProps.js';
 import Bin from '../models/Bin.js';
 
-// export const getAllBinsRoute = document.getElementById("getAllBinsRoute").value;
-// export const getBinRoute = document.getElementById("getBinRoute").value;
-// export const addBinRoute = document.getElementById("addBinRoute").value;
-// export const deleteBinRoute = document.getElementById("deleteBinRoute").value;
-// export const addArticleToBinRoute = document.getElementById("addArticleToBinRoute").value;
-// export const removeArticleFromBinRoute = document.getElementById("removeArticleFromBinRoute").value;
-
 /**
  * A page-like component that displays all the user's bins.
  */
@@ -86,18 +79,6 @@ export default class BinComponent extends React.Component {
         }
     }
 
-
-    // loadBins(username){
-    //     this.setState({
-    //         bins: [
-    //             { name: "Your Favorites", articles: ["Default Shirt"] },
-    //             { name: "Work", articles: ["White Shirt", " Black Pants", "Black Shoes"] }, 
-    //             { name: "Weekend", articles: ["Blue Hat", "White Shirt", "Black Tie", "Blue Pants"] },
-    //             { name: "Home", articles: ["Gray Shirt", "Black Pants"] }
-    //         ]
-    //     });
-    // }
-    
     changeHandler(e) {
         this.setState({[e.target['id']]: e.target.value});
     }
@@ -115,8 +96,6 @@ export default class BinComponent extends React.Component {
             ce('br'),
             ce('input', {type: 'text', id: 'addText', value: this.state.addText, onChange: e => this.changeHandler(e)}),
             ce('button', { onClick: e => this.addBin(this.state.addText) }, 'Add Bin'),
-            // ce('input', {type: 'text', id: 'searchText', value: this.state.searchText, onChange: e => this.changeHandler(e)}),
-            // ce('button', {onClick: e => console.log(this.state.searchText)}, 'Search'),
             ce('br'),
             ce('br'),
             ce('br'),
