@@ -1,4 +1,5 @@
 import { ce, csrfToken, versionedAsset } from '../react-common.js';
+import BinPreviewComponent from './home/BinPreviewComponent.js';
 import '../models/PageLikeComponentProps.js';
 import Bin from '../models/Bin.js';
 
@@ -16,15 +17,12 @@ export default class BinComponent extends React.Component {
          * @type {object}
          * @property {?Bin[]} bins All the users bins. `null` means the bins are
          * not yet loaded
-         * @property {?Article[]} articles The currently selected Bin's
-         * articles. `null` means the articles are not yet loaded.
          * @property {string} addText The potential new Bin's name
          * @property {?Bin} currBin The currently selected Bin, or `null` if 
          * no Bin is selected
          */
         this.state = {
             bins: null,
-            articles: null,
             addText: "",
             currBin: null,
         };
@@ -85,7 +83,7 @@ export default class BinComponent extends React.Component {
     }
 
     handleBinClick(bin) {
-        this.setState({ currBin: bin }, () => this.getBinInfo());
+        this.setState({ currBin: bin });
     }
 
     render() {
@@ -114,33 +112,25 @@ export default class BinComponent extends React.Component {
                         ce('div', { className: 'indeterminate' }),
                     );
                 else
-                    return ce('div', null,
-                        ce('div', null,
-                            this.state.bins.map((bin) =>
-                                ce('h3', { key: bin.id, onClick: () => this.handleBinClick(bin)}, bin.name),
-                            ),
-                        ),
-                        ce('div', null,
-                            this.state.bins.map((bin) =>
-                            ce('button', {key: bin.name, onClick: () => this.deleteBin(bin.id) }, `Delete ${bin.name}`),
+                    return ce('ul', { className: 'collection' },
+                        this.state.bins.map((bin) =>
+                            ce('a', {
+                                    key: bin.id,
+                                    href: '#',
+                                    className: 'collection-item avatar valign-wrapper ' +
+                                        // Mark bin as 'active' if it's currently selected
+                                        ((this.state.currBin !== null && bin.id === this.state.currBin.id) ? 'active' : ''),
+                                    style: { display: 'flex' },
+                                    onClick: () => this.handleBinClick(bin) },
+                                ce('img', { src: bin.image || versionedAsset('/images/article-placeholder.svg'), className: 'circle' }),
+                                ce('span', { className: 'title' }, bin.name),
                             ),
                         ),
                     );
             })(),
             (() => {
-                if (this.state.currBin !== null && this.state.articles === null)
-                    return ce('div', { className: 'progress' },
-                        ce('div', { className: 'indeterminate' }),
-                    );
-                else if (this.state.currBin !== null && this.state.articles !== null)
-                    return ce('div', null,
-                        ce('div', null, 'Viewing: '),
-                        ce('div', null, this.state.currBin.name),
-                        ce('div', null, 'Articles: '),
-                        ce('ul', null, this.state.articles.map((article, index) =>
-                            ce('li', { key: index }, article.clothing_type))
-                        ),
-                    );
+                if (this.state.currBin !== null)
+                    return ce(BinPreviewComponent, { key: this.state.currBin.id, bin: this.state.currBin });
             })(),
         );
     }
