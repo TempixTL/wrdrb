@@ -14,22 +14,25 @@ export default class BinComponent extends React.Component {
         /**
          * @typedef BinComponentState
          * @type {object}
-         * @property {Bin[]} bins
-         * @property {string} searchText The current Bin search text.
-         * @property {?string} selected The currently selected Bin.
+         * @property {?Bin[]} bins All the users bins. `null` means the bins are
+         * not yet loaded
+         * @property {?Article[]} articles The currently selected Bin's
+         * articles. `null` means the articles are not yet loaded.
+         * @property {string} addText The potential new Bin's name
+         * @property {?Bin} currBin The currently selected Bin, or `null` if 
+         * no Bin is selected
          */
         this.state = {
-            bins: [],
-            articles: [],
-            searchText: "",
+            bins: null,
+            articles: null,
             addText: "",
-            selected: null,
             currBin: null,
         };
     }
 
     componentDidMount() {
-        this.getBins()
+        if (this.state.bins === null)
+            this.getBins()
     }
 
     getBins() {
@@ -56,6 +59,11 @@ export default class BinComponent extends React.Component {
         if (response.ok) {
             M.toast({html: `Bin added`});
             this.setState({ addText: "" })
+
+            // Getting Bins from server right after adding one causes a race
+            // condition where the server responds before the bin has been
+            // added. Adding a little delay to alleviate this.
+            await new Promise((resolve) => setTimeout(resolve, 250 /** ms */));
             this.getBins();
         } else {
           console.log(response.status);
@@ -80,10 +88,7 @@ export default class BinComponent extends React.Component {
     }
 
     handleBinClick(bin) {
-        this.setState({ selected: bin.name });
-        this.setState({ currBin: bin }, function () {
-            this.getBinInfo()
-        });
+        this.setState({ currBin: bin }, () => this.getBinInfo());
     }
 
     render() {
@@ -94,19 +99,38 @@ export default class BinComponent extends React.Component {
                     value: this.state.addText,
                     onChange: (e) => this.setState({ addText: e.target.value }) }),
             ce('button', { onClick: () => this.addBin(this.state.addText) }, 'Add Bin'),
-            ce('div', null, this.state.bins.map((bin) =>
-                ce('h3', {key: bin.id, onClick: () => this.handleBinClick(bin)}, bin.name),
-            )),
-            ce('div', null, this.state.bins.map((bin) =>
-                ce('button', {key: bin.name, onClick: () => this.deleteBin(bin.id) }, `Delete ${bin.name}`),
-            )),
             (() => {
-                if (this.state.currBin != null && this.state.selected != null)
+                if (this.state.bins === null)
+                    return ce('div', { className: 'progress' },
+                        ce('div', { className: 'indeterminate' }),
+                    );
+                else
+                    return ce('div', null,
+                        ce('div', null,
+                            this.state.bins.map((bin) =>
+                                ce('h3', { key: bin.id, onClick: () => this.handleBinClick(bin)}, bin.name),
+                            ),
+                        ),
+                        ce('div', null,
+                            this.state.bins.map((bin) =>
+                            ce('button', {key: bin.name, onClick: () => this.deleteBin(bin.id) }, `Delete ${bin.name}`),
+                            ),
+                        ),
+                    );
+            })(),
+            (() => {
+                if (this.state.currBin !== null && this.state.articles === null)
+                    return ce('div', { className: 'progress' },
+                        ce('div', { className: 'indeterminate' }),
+                    );
+                else if (this.state.currBin !== null && this.state.articles !== null)
                     return ce('div', null,
                         ce('div', null, 'Viewing: '),
-                        ce('div', null, this.state.bins.find((bin) => {return bin.name === this.state.selected}).name),
+                        ce('div', null, this.state.currBin.name),
                         ce('div', null, 'Articles: '),
-                        ce('ul', null, this.state.articles.map((article, index) => ce('li', {key: index}, article.clothing_type))),
+                        ce('ul', null, this.state.articles.map((article, index) =>
+                            ce('li', { key: index }, article.clothing_type))
+                        ),
                     );
             })(),
         );
