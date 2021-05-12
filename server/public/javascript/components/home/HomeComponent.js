@@ -39,6 +39,9 @@ export default class HomeComponent extends React.Component {
       ));
 
       this.setState({ bins });
+    } else {
+      M.toast({html: 'Failed to load bins.'});
+      console.log('Failed to load bins.', response.status);
     }
   }
 
