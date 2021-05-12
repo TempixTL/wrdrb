@@ -49,6 +49,17 @@ export default class BinPreviewComponent extends React.Component {
     });
   }
 
+  /**
+   * @param {Article} article
+   * @returns {string} A short caption of `article`.
+   */
+  articleCaption(article) {
+    if (article.brand !== null)
+      return `${article.brand}, ${article.clothingType}`;
+    else
+      return article.clothingType;
+  }
+
   render() {
     return ce('div', { className: 'section' },
       ce('div', { className: 'row' },
@@ -70,6 +81,8 @@ export default class BinPreviewComponent extends React.Component {
                 ce('div', { className: 'card' },
                   ce('div', { className: 'card-image' },
                     ce('img', { src: article.img || versionedAsset('/images/article-placeholder.svg') }),
+                    ce('div', { className: 'card-image-gradient' }),
+                    ce('span', { className: 'card-title' }, this.articleCaption(article)),
                   ),
                 ),
               )
