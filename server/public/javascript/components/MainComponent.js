@@ -132,6 +132,7 @@ export default class MainComponent extends React.Component {
       M.toast({html: 'Successfully signed out.'});
       this.setState({
         user: null,
+        currentPage: Page.Home,
       });
     } else {
       M.toast({html: `Unable to sign out. ${response.statusText}.`});
