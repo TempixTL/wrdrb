@@ -29,7 +29,7 @@ export default class OutfitComponent extends React.Component {
         ),
       ),
       ce('div', { className: 'row' },
-        ce('div', { classname: 'col s12' },
+        ce('div', { className: 'col s12' },
           ce('button', {
                   className: 'btn waves-effect waves-dark white',
                   onClick: () => this.deleteBin(this.state.currBin.id) },
