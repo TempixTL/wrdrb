@@ -32,7 +32,7 @@ export default class HomeComponent extends React.Component {
     if (response.ok) {
       const binsJson = await response.json();
       const bins = binsJson.map((binJson) => new Bin(
-        binJson.id, binJson.name, this.props.username, null
+        binJson.id, binJson.name, this.props.username
       ));
 
       this.setState({ bins });

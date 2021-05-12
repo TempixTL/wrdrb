@@ -42,9 +42,9 @@ export default class BinPreviewComponent extends React.Component {
     await new Promise(resolve => setTimeout(resolve, 1000));
     this.setState({
       articles: [ 
-        new Article(0, ClothingType.Shirt, Color.Red, 'Testing Brand', null, null, null),
-        new Article(1, ClothingType.Shorts, Color.Blue, 'Testing Brand', null, null, null),
-        new Article(2, ClothingType.Shoes, Color.White, 'Testing Brand', null, null, null),
+        new Article(0, ClothingType.Shirt, Color.Red, 'Testing Brand'),
+        new Article(1, ClothingType.Shorts, Color.Blue, 'Testing Brand'),
+        new Article(2, ClothingType.Shoes, Color.White, 'Testing Brand'),
       ]
     });
   }
