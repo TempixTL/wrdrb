@@ -3,6 +3,7 @@ import NavBarComponent from './NavBarComponent.js';
 import AuthenticationComponent from './authentication/AuthenticationComponent.js';
 import HomeComponent from './home/HomeComponent.js';
 import OutfitLogComponent from './OutfitLogComponent.js';
+import WardrobeComponent from './WardrobeComponent.js';
 import BinComponent from './BinComponent.js';
 import AuthenticatedUser from '../models/AuthenticatedUser.js';
 import '../models/NavigateCallback.js';
@@ -90,8 +91,6 @@ export default class MainComponent extends React.Component {
   }
 
   navbarMyWardrobeClicked() {
-    // TODO
-    console.log('My Wardrobe clicked');
     this.setState({
       currentPage: Page.Wardrobe,
     });
@@ -119,7 +118,7 @@ export default class MainComponent extends React.Component {
       case Page.OutfitLog:
         return OutfitLogComponent;
       case Page.Wardrobe:
-        return 'div';
+        return WardrobeComponent;
       case Page.Bins:
         return BinComponent;
     }
