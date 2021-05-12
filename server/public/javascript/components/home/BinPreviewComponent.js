@@ -26,15 +26,24 @@ export default class BinPreviewComponent extends React.Component {
         ),
       ),
       ce('div', { className: 'row' },
-        this.props.bin.articles.map((article, index) =>
-          ce('div', { key: index, className: 'col s12 m6 l4'},
-            ce('div', { className: 'card' },
-              ce('div', { className: 'card-image' },
-                ce('img', { src: article.img, width: '150px' }),
+        (() => {
+          if (this.props.bin.articles === null)
+            return ce('div', { className: 'col s12' },
+              ce('div', { className: 'progress' },
+                ce('div', { className: 'indeterminate' }),
               ),
-            ),
-          )
-        ),
+            );
+          else
+            return this.props.bin.articles.map((article, index) =>
+              ce('div', { key: index, className: 'col s12 m6 l4'},
+                ce('div', { className: 'card' },
+                  ce('div', { className: 'card-image' },
+                    ce('img', { src: article.img, width: '150px' }),
+                  ),
+                ),
+              )
+            );
+        })(),
       ),
     );
   }
