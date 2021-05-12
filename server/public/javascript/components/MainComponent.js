@@ -3,8 +3,11 @@ import NavBarComponent from './NavBarComponent.js';
 import AuthenticationComponent from './authentication/AuthenticationComponent.js';
 import HomeComponent from './home/HomeComponent.js';
 import OutfitLogComponent from './OutfitLogComponent.js';
+import WardrobeComponent from './WardrobeComponent.js';
 import BinComponent from './BinComponent.js';
 import AuthenticatedUser from '../models/AuthenticatedUser.js';
+import '../models/NavigateCallback.js';
+import Page from '../models/Page.js';
 
 /**
  * The Main entry point of the React application.
@@ -19,11 +22,11 @@ export default class MainComponent extends React.Component {
      * @typedef MainComponentState
      * @type {object}
      * @property {?AuthenticatedUser} user
-     * @property {React.Component} currentPage
+     * @property {Page} currentPage
      */
     this.state = {
       user: null,
-      currentPage: HomeComponent,
+      currentPage: Page.Home,
     };
   }
 
@@ -77,24 +80,48 @@ export default class MainComponent extends React.Component {
 
   navbarBrandClicked() {
     this.setState({
-      currentPage: HomeComponent,
+      currentPage: Page.Home,
     });
   }
 
   navbarOutfitLogClicked() {
     this.setState({
-      currentPage: OutfitLogComponent,
+      currentPage: Page.OutfitLog,
     });
   }
 
   navbarMyWardrobeClicked() {
-    console.log('My Wardrobe clicked');
+    this.setState({
+      currentPage: Page.Wardrobe,
+    });
   }
 
   navbarMyBinsClicked() {
     this.setState({
-      currentPage: BinComponent,
+      currentPage: Page.Bins,
     });
+  }
+
+  /**
+   * Used by page-like components to navigate to other pages within the
+   * Application.
+   * @param {Page} page The page to navigate to
+   */
+  navigate(page) {
+    this.setState({ currentPage: page });
+  }
+
+  currentPageComponent() {
+    switch (this.state.currentPage) {
+      case Page.Home:
+        return HomeComponent;
+      case Page.OutfitLog:
+        return OutfitLogComponent;
+      case Page.Wardrobe:
+        return WardrobeComponent;
+      case Page.Bins:
+        return BinComponent;
+    }
   }
 
   async navbarLogoutClicked() {
@@ -104,6 +131,7 @@ export default class MainComponent extends React.Component {
       M.toast({html: 'Successfully signed out.'});
       this.setState({
         user: null,
+        currentPage: Page.Home,
       });
     } else {
       M.toast({html: `Unable to sign out. ${response.statusText}.`});
@@ -130,7 +158,10 @@ export default class MainComponent extends React.Component {
               onLogoutClicked: () => this.navbarLogoutClicked(),
             }),
             ce('div', { className: 'container section' },
-              ce(this.state.currentPage, { username: this.state.user.username }),
+              ce(this.currentPageComponent(), { 
+                  key: this.state.user.id,
+                  username: this.state.user.username,
+                  navigate: (p) => this.navigate(p) }),
             ),
           );
       })(),
