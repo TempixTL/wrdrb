@@ -1,12 +1,24 @@
 import { ce, csrfToken, versionedAsset } from '../react-common.js';
+import Outfit from '../models/Outfit.js';
 
 const clothingType = ["Shirt","Pants","Shoes","Hat","Dress","Skirt","Shorts"]
 const color = ["Red","Orange","Yellow","Green","Blue","Indigo","Violet","Black","White","Grey","Brown"]
 const weatherCondition = ["Snow","Sun", "Rain", "Wind"]
 
+/**
+ * @typedef {object} OutfitComponentProps
+ * @type {object}
+ * @property {Outfit} outfit
+ */
+
+/**
+ * A component which renders a single `Outfit`.
+ */
 export default class OutfitComponent extends React.Component {
   constructor(props) {
     super(props);
+    /** @type {OutfitComponentProps} */
+    this.props;
   }
 
   render() {
