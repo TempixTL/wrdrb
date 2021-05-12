@@ -18,9 +18,12 @@ export default class OutfitLogComponent extends React.Component {
      * @type {object}
      * @property {?Outfit[]} outfits The outfits of the current user, or
      * `null` if they are still loading.
+     * @property {boolean} pulseActionButton Pulses the action button initially
+     * so the user sees it.
      */
     this.state = {
       outfits: null,
+      pulseActionButton: true,
     };
   }
 
@@ -61,6 +64,7 @@ export default class OutfitLogComponent extends React.Component {
   }
 
   componentDidMount() {
+    M.FloatingActionButton.init(document.querySelectorAll('.fixed-action-btn'));
     if (this.state.outfits === null)
       this.loadOutfits();
   }
@@ -72,6 +76,18 @@ export default class OutfitLogComponent extends React.Component {
   render(){
     return ce('div', null, 
       ce('h1', null, 'Outfit Log'),
+      ce('div', { className: 'fixed-action-btn' },
+        ce('a', {
+            href: '#',
+            onMouseOver: () => this.setState({pulseActionButton: false}),
+            className: 'btn-floating btn-large' + ((this.state.pulseActionButton) ? ' pulse' : '') },
+          ce('i', { className: 'large material-icons' }, 'mode_edit'),
+        ),
+        ce('ul', null,
+          ce('li', null, ce('a', { className: 'btn-floating green' }, ce('i', { className: 'material-icons' }, 'event'))),
+          ce('li', null, ce('a', { className: 'btn-floating blue' }, ce('i', { className: 'material-icons' }, 'more_horiz'))),
+        ),
+      ),
       (() => {
         if (this.state.outfits === null)
           return ce('div', { className: 'progress' },
@@ -82,10 +98,6 @@ export default class OutfitLogComponent extends React.Component {
             ce(OutfitComponent, { key: index, outfit })
           );
       })(),
-      // ce('h2', null, 'Create new Outfit:'),
-      // ce('input', {type: "text", id: "createDate", value: this.state.createDate, placeholder:'date', onChange: e => this.changerHandler(e)}),
-      // ce('input', {type: "text", id: "createArticles", value: this.state.createArticles, placeholder:'articles', onChange: e => this.changerHandler(e)}),
-      // ce('button', {onClick: e => this.createArticle(e)}, 'Create Article'),
     )
   }
 }
