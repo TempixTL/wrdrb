@@ -60,6 +60,35 @@ INSERT INTO articles (
   (SELECT id FROM colors WHERE name = 'BLACK'),
   (SELECT id from clothing_types WHERE name = 'SHORTS'),
   (SELECT id from weather_conditions WHERE name = 'SUN')
+), (
+  -- This will have ID 3, and so on...
+  (SELECT id FROM users WHERE username = 'wrdrb'),
+  'Mark Lewis Vuitton',
+  'Testing Material',
+  null,
+  (SELECT id from clothing_types WHERE name = 'HAT'),
+  (SELECT id from weather_conditions WHERE name = 'SUN')
+), (
+  (SELECT id FROM users WHERE username = 'wrdrb'),
+  'The North Fogarty',
+  'Testing Material',
+  null,
+  (SELECT id from clothing_types WHERE name = 'PANTS'),
+  null
+), (
+  (SELECT id FROM users WHERE username = 'wrdrb'),
+  'Steve Madsingill',
+  'Testing Material',
+  null,
+  (SELECT id from clothing_types WHERE name = 'SHOES'),
+  null
+), (
+  (SELECT id FROM users WHERE username = 'wrdrb'),
+  'Tommy Hickfinger',
+  'Testing Material',
+  null,
+  (SELECT id from clothing_types WHERE name = 'SHIRT'),
+  null
 );
 
 INSERT INTO outfits (
@@ -69,6 +98,10 @@ INSERT INTO outfits (
   -- This will have ID 1
   (SELECT id FROM users WHERE username = 'wrdrb'),
   '2021-05-07 13:00:00-05'
+), (
+  -- This will have ID 2
+  (SELECT id FROM users WHERE username = 'wrdrb'),
+  '2021-05-12 19:00:00-05'
 );
 
 INSERT INTO outfits_articles (
@@ -88,14 +121,26 @@ INSERT INTO bins (
 ) VALUES (
   -- This will have ID 1
   (SELECT id FROM users WHERE username = 'wrdrb'),
-  'Testing Bin'
+  'Trinity CS Inspo'
+), (
+  -- This will have ID 2
+  (SELECT id FROM users WHERE username = 'wrdrb'),
+  'Another Bin'
 );
 
 INSERT INTO articles_bins (
   bin_id,
   article_id
 ) VALUES (
-  1, 1
+  1, 3
 ), (
-  1, 2
+  1, 4
+), (
+  1, 5
+), (
+  1, 6
+), (
+  2, 1
+), (
+  2, 2
 );
