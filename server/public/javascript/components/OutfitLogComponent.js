@@ -65,6 +65,7 @@ export default class OutfitLogComponent extends React.Component {
 
   componentDidMount() {
     M.FloatingActionButton.init(document.querySelectorAll('.fixed-action-btn'));
+    M.Tooltip.init(document.querySelectorAll('.tooltipped'));
     if (this.state.outfits === null)
       this.loadOutfits();
   }
@@ -84,8 +85,8 @@ export default class OutfitLogComponent extends React.Component {
           ce('i', { className: 'large material-icons' }, 'mode_edit'),
         ),
         ce('ul', null,
-          ce('li', null, ce('a', { className: 'btn-floating green' }, ce('i', { className: 'material-icons' }, 'event'))),
-          ce('li', null, ce('a', { className: 'btn-floating blue' }, ce('i', { className: 'material-icons' }, 'more_horiz'))),
+          ce('li', null, ce('a', { 'data-position': 'left', 'data-tooltip': 'Log Today\'s Outfit', className: 'btn-floating green tooltipped' }, ce('i', { className: 'material-icons' }, 'event'))),
+          ce('li', null, ce('a', { 'data-position': 'left', 'data-tooltip': 'Log Past Outfit', className: 'btn-floating blue tooltipped' }, ce('i', { className: 'material-icons' }, 'more_horiz'))),
         ),
       ),
       (() => {
