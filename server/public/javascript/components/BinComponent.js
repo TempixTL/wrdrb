@@ -94,6 +94,16 @@ export default class BinComponent extends React.Component {
     render() {
         return ce('div', null, 
             ce('h1', null, "Your Bins"),
+                ),
+            ),
+            ce('div', { className: 'row' },
+                ce('div', { className: 'col s12'},
+                    ce('button', { className: 'btn waves-effect waves-light'},
+                        ce('span', null, 'Create Bin'),
+                        ce('i', { className: 'material-icons left' }, 'add'),
+                    )
+                ),
+            ),
             ce('input', {
                     type: 'text',
                     value: this.state.addText,
