@@ -90,6 +90,7 @@ export default class MainComponent extends React.Component {
   }
 
   navbarMyWardrobeClicked() {
+    // TODO
     console.log('My Wardrobe clicked');
   }
 
