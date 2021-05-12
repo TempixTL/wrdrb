@@ -21,11 +21,11 @@ export default class MainComponent extends React.Component {
      * @typedef MainComponentState
      * @type {object}
      * @property {?AuthenticatedUser} user
-     * @property {React.Component} currentPage
+     * @property {Page} currentPage
      */
     this.state = {
       user: null,
-      currentPage: HomeComponent,
+      currentPage: Page.Home,
     };
   }
 
@@ -79,24 +79,27 @@ export default class MainComponent extends React.Component {
 
   navbarBrandClicked() {
     this.setState({
-      currentPage: HomeComponent,
+      currentPage: Page.Home,
     });
   }
 
   navbarOutfitLogClicked() {
     this.setState({
-      currentPage: OutfitLogComponent,
+      currentPage: Page.OutfitLog,
     });
   }
 
   navbarMyWardrobeClicked() {
     // TODO
     console.log('My Wardrobe clicked');
+    this.setState({
+      currentPage: Page.Wardrobe,
+    });
   }
 
   navbarMyBinsClicked() {
     this.setState({
-      currentPage: BinComponent,
+      currentPage: Page.Bins,
     });
   }
 
@@ -106,23 +109,20 @@ export default class MainComponent extends React.Component {
    * @param {Page} page The page to navigate to
    */
   navigate(page) {
-    let currentPage;
-    switch(page) {
-      case Page.Bins:
-        currentPage = BinComponent;
-        break;
-      case Page.OutfitLog:
-        currentPage = OutfitLogComponent;
-        break;
-      case Page.Wardrobe:
-        // TODO
-        return;
-      case Page.Home:
-      default:
-        currentPage = HomeComponent;
-    }
+    this.setState({ currentPage: page });
+  }
 
-    this.setState({ currentPage });
+  currentPageComponent() {
+    switch (this.state.currentPage) {
+      case Page.Home:
+        return HomeComponent;
+      case Page.OutfitLog:
+        return OutfitLogComponent;
+      case Page.Wardrobe:
+        return 'div';
+      case Page.Bins:
+        return BinComponent;
+    }
   }
 
   async navbarLogoutClicked() {
@@ -158,7 +158,8 @@ export default class MainComponent extends React.Component {
               onLogoutClicked: () => this.navbarLogoutClicked(),
             }),
             ce('div', { className: 'container section' },
-              ce(this.state.currentPage, { 
+              ce(this.currentPageComponent(), { 
+                  key: this.state.user.id,
                   username: this.state.user.username,
                   navigate: (p) => this.navigate(p) }),
             ),
