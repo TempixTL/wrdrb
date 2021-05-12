@@ -54,7 +54,18 @@ export default class HomeComponent extends React.Component {
           ),
         ),
       ),
-      this.state.bins.map((bin, index) => ce(BinPreviewComponent, { key: index, bin })),
+      (() => {
+        if (this.state.bins.length > 0)
+          return this.state.bins.map((bin, index) => ce(BinPreviewComponent, { key: index, bin }));
+        else
+          return ce('div', { className: 'section' },
+            ce('div', { className: 'row' },
+              ce('div', { className: 'col s12' },
+                ce('p', null, 'No bins to show 😔'),
+              ),
+            ),
+          );
+      })(),
     );
   }
 }
