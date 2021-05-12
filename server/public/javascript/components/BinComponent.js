@@ -79,10 +79,6 @@ export default class BinComponent extends React.Component {
         }
     }
 
-    changeHandler(e) {
-        this.setState({[e.target['id']]: e.target.value});
-    }
-
     handleBinClick(bin) {
         this.setState({ selected: bin.name });
         this.setState({ currBin: bin }, function () {
@@ -92,14 +88,17 @@ export default class BinComponent extends React.Component {
 
     render() {
         return ce('div', null, 
-            ce('h1', null, this.props.username + "'s Bins"),
-            ce('input', {type: 'text', id: 'addText', value: this.state.addText, onChange: e => this.changeHandler(e)}),
-            ce('button', { onClick: e => this.addBin(this.state.addText) }, 'Add Bin'),
-            ce('div', null, this.state.bins.map((bin, index) =>
-                ce('h3', {key: bin.id, onClick: e => this.handleBinClick(bin)}, bin.name),
+            ce('h1', null, "Your Bins"),
+            ce('input', {
+                    type: 'text',
+                    value: this.state.addText,
+                    onChange: (e) => this.setState({ addText: e.target.value }) }),
+            ce('button', { onClick: () => this.addBin(this.state.addText) }, 'Add Bin'),
+            ce('div', null, this.state.bins.map((bin) =>
+                ce('h3', {key: bin.id, onClick: () => this.handleBinClick(bin)}, bin.name),
             )),
-            ce('div', null, this.state.bins.map((bin, index) =>
-                ce('button', {key: bin.name, onClick: e => this.deleteBin(bin.id) }, `Delete ${bin.name}`),
+            ce('div', null, this.state.bins.map((bin) =>
+                ce('button', {key: bin.name, onClick: () => this.deleteBin(bin.id) }, `Delete ${bin.name}`),
             )),
             (() => {
                 if (this.state.currBin != null && this.state.selected != null)
