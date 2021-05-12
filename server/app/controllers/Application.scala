@@ -13,10 +13,6 @@ import models.WrdrbDb
 import play.api.libs.json._
 import models._
 
-//            Potential Types for Bins Method
-// case class User(username: String)
-// case class Bin(name: String, articles: Seq[String])
-
 @Singleton
 class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents)
     (implicit ec: ExecutionContext) extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
@@ -25,6 +21,7 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
   // Implicit Reads and Writes
   import models.User.Implicits._
   import models.AuthenticatingUser.Implicits._
+  import models.NewBin.Implicits._
   implicit val articleWriter = Json.writes[Article]
   implicit val outfitWriter = Json.writes[Outfit]
   implicit val binWriter = Json.writes[Bin]
@@ -47,7 +44,7 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
     withJsonBody[AuthenticatingUser] {
       case AuthenticatingUser(username, password) =>
         database.validateLogin(username, password).map {
-          case Some(user) => Ok(Json.toJson(user))
+          case Some(user) => Ok(Json.toJson(user)).withSession("username" -> username)
           case None       => Unauthorized("Authentication Failed")
         }
     }
@@ -57,7 +54,7 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
     withJsonBody[AuthenticatingUser] { 
       case AuthenticatingUser(username, password) =>
         database.validateRegister(username, password).map {
-          case Some(user) => Ok(Json.toJson(user))
+          case Some(user) => Ok(Json.toJson(user)).withSession("username" -> username)
           case None       => Conflict("Username already taken")
         }
     }
@@ -78,24 +75,30 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
   }
 
   def getBin(binId: Int) = Action.async {implicit request =>
-    withSessionUsername { username =>
-      val bin = database.getBin(binId)
-      bin.map(bin => Ok(Json.toJson(bin)))
-    }
+    database.getBin(binId).map(bin => Ok(Json.toJson(bin)))
   }
 
-  def addBin(name: String) = Action.async {implicit request =>
-    withSessionUsername { username => 
-      val res = database.addBin(username, name)
-      res.map(res => Ok(Json.toJson(res)))
+  def addBin = Action.async {implicit request =>
+    withJsonBody[NewBin] {
+      case NewBin(name) =>
+        withSessionUsername { username => 
+          val res = database.addBin(username, name)
+          res.map(result => Ok(Json.toJson(result)))
+        }
+      case _ => Ok(Json.toJson(false))
     }
   }
 
   def deleteBin(binId: Int) = Action.async {implicit request =>
-    withSessionUsername { username => 
-      val res = database.deleteBin(binId)
-      res.map(res => Ok(Json.toJson(res)))
-    }
+    database.deleteBin(binId).map(res => Ok(Json.toJson(res)))
+  }
+
+  def addArticleToBin(binId: Int, articleId: Int) = Action.async {implicit request => 
+    database.addArticleToBin(binId, articleId).map(res => Ok(Json.toJson(res)))
+  }
+
+  def removeArticleFromBin(binId: Int, articleId: Int) = Action.async {implicit request => 
+    database.removeArticleFromBin(binId, articleId).map(res => Ok(Json.toJson(res)))
   }
 
   private def withJsonBody[A](onSuccess: A => Future[Result])(implicit request: Request[AnyContent], reads: Reads[A]): Future[Result] = {
@@ -106,4 +109,9 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
       }
     }.getOrElse(Future(BadRequest("Unable to parse body as JSON.")))
   }
+
+  def withSessionUsername(f: String => Result)(implicit request: Request[AnyContent]) = {
+    request.session.get("username").map(f).getOrElse(Ok(Json.toJson(Seq.empty[String])))
+  }
+
 }

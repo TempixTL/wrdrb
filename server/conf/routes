@@ -11,6 +11,14 @@ POST       /user/validate               controllers.Application.validateUser
 POST       /user/register               controllers.Application.registerUser
 GET        /user/:userId                controllers.Application.getUser(userId)
 
+# Bin Routes
+GET        /bins                        controllers.Application.getAllBins
+POST       /bin                         controllers.Application.addBin
+GET        /bin/:binId                  controllers.Application.getBin(binId)
+DELETE     /bin/:binId                  controllers.Application.deleteBin(binId)
+POST       /bin/:binId/article/:articleId   controllers.Application.addArticleToBin(binId, articleId)
+DELETE     /bin/:binId/article/:articleId   controllers.Application.removeArticleFromBin(binId, articleId)
+
 # Prefix must match `play.assets.urlPrefix`
 GET        /assets/*file                 controllers.Assets.at(file)
 GET        /versionedAssets/*file        controllers.Assets.versioned(path="/public", file: Asset)
