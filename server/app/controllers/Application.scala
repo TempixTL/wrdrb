@@ -68,37 +68,43 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
   }
 
  def getAllBins = Action.async {implicit request => 
-    withSessionUsername { username =>
-      val bins = database.getAllBins(username)
-      bins.map(bins => Ok(Json.toJson(bins)))
+    request.session.get("username") match {
+      case Some(username) => {
+        val bins = database.getAllBins(username)
+        bins.map(bins => Ok(Json.toJson(bins)))
+      }
+      case None => Future(BadRequest(""))
     }
   }
 
-  def getBin(binId: Int) = Action.async {implicit request =>
-    database.getBin(binId).map(bin => Ok(Json.toJson(bin)))
+  def getBin(binId: String) = Action.async {implicit request =>
+    database.getBin(binId.toInt).map(bins => Ok(Json.toJson(bins)))
   }
 
   def addBin = Action.async {implicit request =>
     withJsonBody[NewBin] {
       case NewBin(name) =>
-        withSessionUsername { username => 
-          val res = database.addBin(username, name)
-          res.map(result => Ok(Json.toJson(result)))
+        request.session.get("username") match {
+          case Some(username) => {
+            val res = database.addBin(username, name)
+            res.map(result => Ok(Json.toJson(result)))
+          }
+          case None => Future(BadRequest(""))
         }
-      case _ => Ok(Json.toJson(false))
+      case _ => Future.successful(Ok(Json.toJson(false)))
     }
   }
 
-  def deleteBin(binId: Int) = Action.async {implicit request =>
-    database.deleteBin(binId).map(res => Ok(Json.toJson(res)))
+  def deleteBin(binId: String) = Action.async {implicit request =>
+    database.deleteBin(binId.toInt).map(res => Ok(Json.toJson(res)))
   }
 
-  def addArticleToBin(binId: Int, articleId: Int) = Action.async {implicit request => 
-    database.addArticleToBin(binId, articleId).map(res => Ok(Json.toJson(res)))
+  def addArticleToBin(binId: String, articleId: String) = Action.async {implicit request => 
+    database.addArticleToBin(binId.toInt, articleId.toInt).map(res => Ok(Json.toJson(res)))
   }
 
-  def removeArticleFromBin(binId: Int, articleId: Int) = Action.async {implicit request => 
-    database.removeArticleFromBin(binId, articleId).map(res => Ok(Json.toJson(res)))
+  def removeArticleFromBin(binId: String, articleId: String) = Action.async {implicit request => 
+    database.removeArticleFromBin(binId.toInt, articleId.toInt).map(res => Ok(Json.toJson(res)))
   }
 
   private def withJsonBody[A](onSuccess: A => Future[Result])(implicit request: Request[AnyContent], reads: Reads[A]): Future[Result] = {
@@ -108,10 +114,6 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
         case e @ JsError(_) => Future(BadRequest("Missing required information."))
       }
     }.getOrElse(Future(BadRequest("Unable to parse body as JSON.")))
-  }
-
-  def withSessionUsername(f: String => Result)(implicit request: Request[AnyContent]) = {
-    request.session.get("username").map(f).getOrElse(Ok(Json.toJson(Seq.empty[String])))
   }
 
 }
