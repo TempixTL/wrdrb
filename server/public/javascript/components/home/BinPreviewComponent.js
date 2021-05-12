@@ -114,7 +114,10 @@ export default class BinPreviewComponent extends React.Component {
                   ce('div', { className: 'card-image' },
                     ce('img', { src: article.img || versionedAsset('/images/article-placeholder.svg') }),
                     ce('div', { className: 'card-image-gradient' }),
-                    ce('span', { className: 'card-title' }, this.articleCaption(article)),
+                    ce('span', { className: 'card-title' }, article.brand),
+                  ),
+                  ce('div', { className: 'card-content' },
+                    ce('div', { className: 'chip' }, article.clothingType),
                   ),
                 ),
               )
