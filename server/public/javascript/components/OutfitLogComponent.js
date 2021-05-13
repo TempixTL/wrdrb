@@ -1,125 +1,105 @@
 import OutfitComponent from './OutfitComponent.js';
 import { ce, csrfToken, versionedAsset } from '../react-common.js';
+import Outfit from '../models/Outfit.js';
+import '../models/PageLikeComponentProps.js';
+import Article from '../models/Article.js';
 const outfitLogRoute = document.getElementById("outfitLogRoute").value;
 
-
+/**
+ * A page-like component which renders the user's outfit log.
+ */
 export default class OutfitLogComponent extends React.Component {
   constructor(props) {
     super(props);
+    /** @type {PageLikeComponentProps} */
+    this.props;
+
+    /**
+     * @type {object}
+     * @property {?Outfit[]} outfits The outfits of the current user, or
+     * `null` if they are still loading.
+     * @property {boolean} pulseActionButton Pulses the action button initially
+     * so the user sees it.
+     */
     this.state = {
-      username: "lizzie",
-      outfitDate: "04/29/2021", 
-      outfits: [],
-      createDate: "",
-      createArticles: [],
+      outfits: null,
+      pulseActionButton: true,
     };
   }
 
-  loadOutfits(username){
-    fetch(outfitLogRoute, {
+  async loadOutfits() {
+    const response = await fetch(outfitLogRoute, {
       method: "GET",
-      headers: {'Content-Type': 'application/json', 'Csrf-Token': csrfToken},
-    }).then(res => res.json()).then(data => {
-      this.setState({ outfits: data })
-    })
+      headers: {
+        'Content-Type': 'application/json',
+        'Csrf-Token': csrfToken
+      },
+    });
+
+    if (response.ok) {
+      const outfitsJson = await response.json();
+      const outfits = outfitsJson.map((outfitJson, index) => new Outfit(
+        outfitJson.id || index,
+        new Date(outfitJson.date),
+        outfitJson.image || null,
+        outfitJson.articles.map((articleJson) => new Article(
+          articleJson.id,
+          articleJson.clothing_type || articleJson.clothingType,
+          articleJson.color || null,
+          articleJson.brand || null,
+          articleJson.weather || articleJson.weather_condition || null,
+          articleJson.material || null,
+          articleJson.image || null,
+        )),
+      ));
+
+      this.setState({ outfits });
+    } else if (response.status === 400) {
+      // 400 Unauthorized
+      M.toast({html: 'Must be logged in to retrieve outfits.'});
+      console.log('Must be logged in to retrieve outfits.', response.status);
+    } else {
+      console.log(response.status);
+    }
   }
+
   componentDidMount() {
-    this.loadOutfits(this.props.username);
+    M.FloatingActionButton.init(document.querySelectorAll('.fixed-action-btn'));
+    M.Tooltip.init(document.querySelectorAll('.tooltipped'));
+    if (this.state.outfits === null)
+      this.loadOutfits();
   }
 
   changerHandler(e) {
     this.setState({ [e.target['id']]: e.target.value });
   }
 
-  createArticle(e){
-
-  }
-
   render(){
     return ce('div', null, 
-      ce('h2', null, 'Outfit Log:'),
-      ce('br'),
-      // ce('div', null,
-      //   ce('div', null, this.state.outfits.find((article) => {return article.name === this.state.selected}).name),
-      //   ce('ul', null, this.state.outfits.find((article) => {return article.name === this.state.selected}).articles.map((article, index) => ce('li', {key: index}, article))),
-      // ),
-      this.state.outfits.map((outfit, index) => 
-        ce(OutfitComponent, {key:index, outfit})),
-      ce('br'),
-      ce('h2', null, 'Create new Outfit:'),
-      ce('input', {type: "text", id: "createDate", value: this.state.createDate, placeholder:'date', onChange: e => this.changerHandler(e)}),
-      ce('br'),
-      ce('input', {type: "text", id: "createArticles", value: this.state.createArticles, placeholder:'articles', onChange: e => this.changerHandler(e)}),
-      ce('button', {onClick: e => this.createArticle(e)}, 'Create Article'),
+      ce('h1', null, 'Outfit Log'),
+      ce('div', { className: 'fixed-action-btn' },
+        ce('a', {
+            href: '#',
+            onMouseOver: () => this.setState({pulseActionButton: false}),
+            className: 'btn-floating btn-large' + ((this.state.pulseActionButton) ? ' pulse' : '') },
+          ce('i', { className: 'large material-icons' }, 'mode_edit'),
+        ),
+        ce('ul', null,
+          ce('li', null, ce('a', { 'data-position': 'left', 'data-tooltip': 'Log Today\'s Outfit', className: 'btn-floating green tooltipped' }, ce('i', { className: 'material-icons' }, 'event'))),
+          ce('li', null, ce('a', { 'data-position': 'left', 'data-tooltip': 'Log Past Outfit', className: 'btn-floating blue tooltipped' }, ce('i', { className: 'material-icons' }, 'more_horiz'))),
+        ),
+      ),
+      (() => {
+        if (this.state.outfits === null)
+          return ce('div', { className: 'progress' },
+            ce('div', { className: 'indeterminate' }),
+          );
+        else
+          return this.state.outfits.map((outfit, index) => 
+            ce(OutfitComponent, { key: index, outfit })
+          );
+      })(),
     )
-      //make text fields show *
-      //let them be typed in *
-      //submit info
   }
 }
-/*
-export default props => 
-  props.images.map((image, i) =>
-    <div key={i} className='fadein'>
-      <div 
-        onClick={() => props.removeImage(image.public_id)} 
-        className='delete'
-      >
-      </div>
-      <img src={image.secure_url} alt='' />
-    </div>
-  )
 
-onChange = e => {
-  const files = Array.from(e.target.files)
-  this.setState({ uploading: true })
-
-  const formData = new FormData()
-
-  files.forEach((file, i) => {
-    formData.append(i, file)
-  })
-
-  fetch(`${API_URL}/image-upload`, {
-    method: 'POST',
-    body: formData
-  })
-  .then(res => res.json())
-  .then(images => {
-    this.setState({ 
-      uploading: false,
-      images
-    })
-  })
-};
-
-removeImage = id => {
-  this.setState({
-    images: this.state.images.filter(image => image.public_id !== id)
-  })
-};
-
-
-
-/*render() {
-  const { uploading, images } = this.state
-
-  const content = () => {
-    switch(true) {
-      case uploading:
-        return <Spinner />
-      case images.length > 0:
-        return <Images images={images} removeImage={this.removeImage} />
-      default:
-        return <Buttons onChange={this.onChange} />
-    }
-  }
-
-  return (
-    <div>
-      <div className='buttons'>
-        {content()}
-      </div>
-    </div>
-  )
-}*/
