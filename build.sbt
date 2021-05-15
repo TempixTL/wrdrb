@@ -6,7 +6,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 
 lazy val server = (project in file("server")).settings(commonSettings).settings(
 	name := "play-server",
-  scalaJSProjects := Seq(client),
+  // scalaJSProjects := Seq(client),
   pipelineStages in Assets := Seq(scalaJSPipeline),
   pipelineStages := Seq(digest, gzip),
   // triggers scalaJSPipeline when using compile or continuous compilation
@@ -24,17 +24,17 @@ lazy val server = (project in file("server")).settings(commonSettings).settings(
 ).enablePlugins(PlayScala).
   dependsOn(sharedJvm)
 
-lazy val client = (project in file("client")).settings(commonSettings).settings(
-	name := "play-client",
-  scalaJSUseMainModuleInitializer := true,
-  libraryDependencies ++= Seq(
-    "org.scala-js" %%% "scalajs-dom" % "1.1.0",
-		"me.shadaj" %%% "slinky-core" % "0.6.6",
-		"me.shadaj" %%% "slinky-web" % "0.6.6"
-  ),
-  scalacOptions += "-Ymacro-annotations"
-).enablePlugins(ScalaJSPlugin, ScalaJSWeb).
-  dependsOn(sharedJs)
+// lazy val client = (project in file("client")).settings(commonSettings).settings(
+// 	name := "play-client",
+//   scalaJSUseMainModuleInitializer := true,
+//   libraryDependencies ++= Seq(
+//     "org.scala-js" %%% "scalajs-dom" % "1.1.0",
+// 		"me.shadaj" %%% "slinky-core" % "0.6.6",
+// 		"me.shadaj" %%% "slinky-web" % "0.6.6"
+//   ),
+//   scalacOptions += "-Ymacro-annotations"
+// ).enablePlugins(ScalaJSPlugin, ScalaJSWeb).
+//   dependsOn(sharedJs)
 
 lazy val shared = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Pure)
