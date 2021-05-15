@@ -2,7 +2,6 @@ package controllers
 
 import javax.inject._
 
-import shared.SharedMessages
 import play.api.mvc._
 import scala.concurrent.{Future, ExecutionContext}
 import play.api.db.slick.DatabaseConfigProvider
