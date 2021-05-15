@@ -1,0 +1,9 @@
+{
+  "name": "wrdrb-client",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tom Lauerman <tom@lauerman.dev> (https://lauerman.dev)"
+}
