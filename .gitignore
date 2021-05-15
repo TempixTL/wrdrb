@@ -2,11 +2,11 @@
 .bloop
 .bsp
 .vscode
-project/metals.sbt
+server/project/metals.sbt
 
 logs
-project/project
-project/target
+server/project/project
+server/project/target
 target
 tmp
 .history
