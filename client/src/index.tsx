@@ -1,7 +1,8 @@
-import { ce } from './react-common.js';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import MainComponent from './components/MainComponent.js';
 
 ReactDOM.render(
-  ce(MainComponent),
+  <MainComponent/>,
   document.getElementById('react-root'),
 );
