@@ -1,12 +1,14 @@
+server/public/javascript/react-main.js
+client/node_modules
 .metals
 .bloop
 .bsp
 .vscode
-project/metals.sbt
+server/project/metals.sbt
 
 logs
-project/project
-project/target
+server/project/project
+server/project/target
 target
 tmp
 .history

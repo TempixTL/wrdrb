@@ -1,5 +1,6 @@
-import { ce, csrfToken, versionedAsset } from '../react-common.js';
-import '../models/PageLikeComponentProps.js';
+import * as React from 'react';
+import { ce, csrfToken, versionedAsset } from '../react-common';
+import '../models/PageLikeComponentProps';
 
 
 /**

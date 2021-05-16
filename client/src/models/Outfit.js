@@ -1,4 +1,4 @@
-import Article from './Article.js';
+import Article from './Article';
 
 /**
  * A data model which stores all the information about an Outfit. This includes

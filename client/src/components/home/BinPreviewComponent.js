@@ -1,4 +1,5 @@
-import { ce, versionedAsset } from '../../react-common.js';
+import * as React from 'react';
+import { ce, versionedAsset } from '../../react-common';
 import Bin from '../../models/Bin.js';
 import Article from '../../models/Article.js';
 import ClothingType from '../../models/ClothingType.js';

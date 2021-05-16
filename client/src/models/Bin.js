@@ -1,4 +1,4 @@
-import Article from './Article.js';
+import Article from './Article';
 
 /**
  * A data model which stores all the data about a Bin, including all of it's
