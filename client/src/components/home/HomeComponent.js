@@ -1,3 +1,4 @@
+import * as React from 'react';
 import Bin from '../../models/Bin.js';
 import { ce } from '../../react-common.js';
 import BinPreviewComponent from './BinPreviewComponent.js';

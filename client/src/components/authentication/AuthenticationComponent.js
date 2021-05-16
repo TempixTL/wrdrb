@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { ce, versionedAsset } from '../../react-common.js';
 import UserFormComponent from './UserFormComponent.js';
 import '../../models/UserFormComponentSubmitCallback.js';

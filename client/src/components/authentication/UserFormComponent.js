@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { ce } from '../../react-common.js';
 import '../../models/UserFormComponentSubmitCallback.js';
 

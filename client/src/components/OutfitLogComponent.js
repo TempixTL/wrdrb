@@ -1,3 +1,4 @@
+import * as React from 'react';
 import OutfitComponent from './OutfitComponent.js';
 import { ce, csrfToken, versionedAsset } from '../react-common.js';
 import Outfit from '../models/Outfit.js';
