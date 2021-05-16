@@ -2,16 +2,15 @@ import * as React from 'react';
 
 /**
  * Shorthand alias for `React.createElement()`.
- * @function
  */
 export const ce = React.createElement;
 
 /**
  * String containing the CSRF token for the application. Needed for POST
  * requests.
- * @type {string}
  */
-export const csrfToken = document.getElementById('csrfToken').value;
+export const csrfToken: string =
+  (document.getElementById('csrfToken') as HTMLInputElement).value;
 
 /**
  * A simple helper function to get versioned assets from Play in Javascript.
@@ -21,7 +20,7 @@ export const csrfToken = document.getElementById('csrfToken').value;
  * directory.
  * @returns The full path to the versioned asset from Play.
  */
-export function versionedAsset(src) {
+export function versionedAsset(src: string): string {
   if (src.startsWith('/'))
     src = src.slice(1);
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ce, csrfToken, versionedAsset } from '../react-common.js';
+import { ce, csrfToken, versionedAsset } from '../react-common';
 import BinPreviewComponent from './home/BinPreviewComponent.js';
 import '../models/PageLikeComponentProps.js';
 import Bin from '../models/Bin.js';

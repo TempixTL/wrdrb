@@ -1,6 +1,6 @@
 import * as React from 'react';
 import OutfitComponent from './OutfitComponent.js';
-import { ce, csrfToken, versionedAsset } from '../react-common.js';
+import { ce, csrfToken, versionedAsset } from '../react-common';
 import Outfit from '../models/Outfit.js';
 import '../models/PageLikeComponentProps.js';
 import Article from '../models/Article.js';

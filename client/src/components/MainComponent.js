@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ce, csrfToken, versionedAsset } from '../react-common.js';
+import { ce, csrfToken, versionedAsset } from '../react-common';
 import NavBarComponent from './NavBarComponent.js';
 import AuthenticationComponent from './authentication/AuthenticationComponent.js';
 import HomeComponent from './home/HomeComponent.js';

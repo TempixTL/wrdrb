@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ce, csrfToken, versionedAsset } from '../react-common.js';
+import { ce, csrfToken, versionedAsset } from '../react-common';
 import Outfit from '../models/Outfit.js';
 
 const clothingType = ["Shirt","Pants","Shoes","Hat","Dress","Skirt","Shorts"]
