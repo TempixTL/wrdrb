@@ -1,4 +1,4 @@
-import Page from './Page.js';
+import Page from './Page';
 
 /**
  * A callback used by page-like components to navigate to other pages within

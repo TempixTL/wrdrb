@@ -1,6 +1,6 @@
-import ClothingType from './ClothingType.js';
-import Color from './Color.js';
-import Weather from './Weather.js';
+import ClothingType from './ClothingType';
+import Color from './Color';
+import Weather from './Weather';
 
 /**
  * A data model which stores all the information about a single Article. For

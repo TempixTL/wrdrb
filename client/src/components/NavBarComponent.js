@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ce, versionedAsset } from '../react-common';
-import '../models/ClickCallback.js';
+import '../models/ClickCallback';
 
 /**
  * @typedef NavBarComponentProps

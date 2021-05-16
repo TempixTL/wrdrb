@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { ce, csrfToken, versionedAsset } from '../react-common';
-import NavBarComponent from './NavBarComponent.js';
-import AuthenticationComponent from './authentication/AuthenticationComponent.js';
-import HomeComponent from './home/HomeComponent.js';
-import OutfitLogComponent from './OutfitLogComponent.js';
-import WardrobeComponent from './WardrobeComponent.js';
-import BinComponent from './BinComponent.js';
-import AuthenticatedUser from '../models/AuthenticatedUser.js';
-import '../models/NavigateCallback.js';
-import Page from '../models/Page.js';
+import NavBarComponent from './NavBarComponent';
+import AuthenticationComponent from './authentication/AuthenticationComponent';
+import HomeComponent from './home/HomeComponent';
+import OutfitLogComponent from './OutfitLogComponent';
+import WardrobeComponent from './WardrobeComponent';
+import BinComponent from './BinComponent';
+import AuthenticatedUser from '../models/AuthenticatedUser';
+import '../models/NavigateCallback';
+import Page from '../models/Page';
 
 /**
  * The Main entry point of the React application.
@@ -63,7 +63,7 @@ export default class MainComponent extends React.Component {
     });
 
     if (response.ok) {
-      const user = await response.json();
+      const user = await responseon();
       this.successfulSignIn(user);
     } else if (response.status === 409) {
       // 409 Conflict

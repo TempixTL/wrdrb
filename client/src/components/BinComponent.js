@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ce, csrfToken, versionedAsset } from '../react-common';
-import BinPreviewComponent from './home/BinPreviewComponent.js';
-import '../models/PageLikeComponentProps.js';
-import Bin from '../models/Bin.js';
+import BinPreviewComponent from './home/BinPreviewComponent';
+import '../models/PageLikeComponentProps';
+import Bin from '../models/Bin';
 
 /**
  * A page-like component that displays all the user's bins.

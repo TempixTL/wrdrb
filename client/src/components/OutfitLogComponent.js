@@ -1,9 +1,9 @@
 import * as React from 'react';
-import OutfitComponent from './OutfitComponent.js';
+import OutfitComponent from './OutfitComponent';
 import { ce, csrfToken, versionedAsset } from '../react-common';
-import Outfit from '../models/Outfit.js';
-import '../models/PageLikeComponentProps.js';
-import Article from '../models/Article.js';
+import Outfit from '../models/Outfit';
+import '../models/PageLikeComponentProps';
+import Article from '../models/Article';
 const outfitLogRoute = document.getElementById("outfitLogRoute").value;
 
 /**

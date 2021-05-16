@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ce, csrfToken, versionedAsset } from '../react-common';
-import Outfit from '../models/Outfit.js';
+import Outfit from '../models/Outfit';
 
 const clothingType = ["Shirt","Pants","Shoes","Hat","Dress","Skirt","Shorts"]
 const color = ["Red","Orange","Yellow","Green","Blue","Indigo","Violet","Black","White","Grey","Brown"]

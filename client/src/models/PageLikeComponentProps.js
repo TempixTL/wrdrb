@@ -1,4 +1,4 @@
-import './NavigateCallback.js';
+import './NavigateCallback';
 
 /**
  * Props common to all page-like components. Any page-like component
