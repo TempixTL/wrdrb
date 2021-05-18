@@ -1,0 +1,6 @@
+# Client
+client/node_modules/
+client/npm-debug.log
+
+# Server
+server/target/
