@@ -16,6 +16,6 @@ module.exports = {
   },
   output: {
     filename: 'react-main.js',
-    path: path.resolve(__dirname, '..', 'server', 'public', 'javascript'),
+    path: path.resolve(__dirname, 'dist'),
   },
 };
