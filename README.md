@@ -25,11 +25,12 @@ View the website at [http://localhost:9000](http://localhost:9000)! 🚀
 - [Proposal Presentation][doc_1]
 - [Preliminary Wireframes][doc_2]
 - [Database Schema Diagram][doc_3]
-- [Frontend/Backend API Specification][doc_3]
-- [Final Presentation][doc_4]
+- [Frontend/Backend API Specification][doc_4]
+- [Final Presentation][doc_5]
 
 [ref_docker]: https://www.docker.com/
 [doc_1]: README/proposal-presentation.pdf
 [doc_2]: README/preliminary-wireframes
-[doc_3]: https://wrdrb.stoplight.io/docs/wrdrb/reference/Wrdrb-Api.yaml
-[doc_4]: README/final-presentationpdf
+[doc_3]: README/database-schema-diagram.svg
+[doc_4]: https://wrdrb.stoplight.io/docs/wrdrb/reference/Wrdrb-Api.yaml
+[doc_5]: README/final-presentationpdf
