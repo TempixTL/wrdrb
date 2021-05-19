@@ -33,4 +33,4 @@ View the website at [http://localhost:9000](http://localhost:9000)! 🚀
 [doc_2]: README/preliminary-wireframes
 [doc_3]: README/database-schema-diagram.svg
 [doc_4]: https://wrdrb.stoplight.io/docs/wrdrb/reference/Wrdrb-Api.yaml
-[doc_5]: README/final-presentationpdf
+[doc_5]: README/final-presentation.pdf
