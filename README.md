@@ -4,7 +4,7 @@ Wrdrb is a web app focused on organizing your wardrobe. This repository is home 
 
 Please note that this repository is (indefinitely) a work-in-progress, and has many features implemented only enough for a convincing demo.
 
-## Screenshots
+## Screenshots 🖼️
 
 ![Wrdrb Home Page Screenshot](README/screenshots/home.png)
 
@@ -20,7 +20,7 @@ docker-compose up
 
 View the website at [http://localhost:9000](http://localhost:9000)! 🚀
 
-## Technical Documents
+## Technical Documents 📜
 
 - [Proposal Presentation][doc_1]
 - [Preliminary Wireframes][doc_2]
