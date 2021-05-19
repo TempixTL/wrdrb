@@ -4,10 +4,6 @@ Wrdrb is a web app focused on organizing your wardrobe. This repository is home 
 
 Please note that this repository is (indefinitely) a work-in-progress, and has many features implemented only enough for a convincing demo.
 
-## Screenshots 🖼️
-
-![Wrdrb Home Page Screenshot](README/screenshots/home.png)
-
 ## Installation with Docker 🐋
 
 Install Docker (and Docker Compose on Linux) from [the Docker website][ref_docker].
@@ -28,9 +24,18 @@ View the website at [http://localhost:9000](http://localhost:9000)! 🚀
 - [Frontend/Backend API Specification][doc_4]
 - [Final Presentation][doc_5]
 
+## Screenshots 🖼️
+
+![Wrdrb Login Page Screenshot][img_1]
+![Wrdrb Home Page Screenshot][img_2]
+![Wrdrb Wardrobe Page Screenshot][img_3]
+
 [ref_docker]: https://www.docker.com/
 [doc_1]: README/proposal-presentation.pdf
 [doc_2]: README/preliminary-wireframes
 [doc_3]: README/database-schema-diagram.svg
 [doc_4]: https://wrdrb.stoplight.io/docs/wrdrb/reference/Wrdrb-Api.yaml
 [doc_5]: README/final-presentation.pdf
+[img_1]: README/screenshots/login.png
+[img_2]: README/screenshots/home.png
+[img_3]: README/screenshots/wardrobe.png
